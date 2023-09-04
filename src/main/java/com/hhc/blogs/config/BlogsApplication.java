@@ -1,12 +1,13 @@
-package com.hhc.blogs;
+package com.hhc.blogs.config;
 
-import javafx.application.Application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
+@ComponentScan("com.hhc")
 @SpringBootApplication
 public class BlogsApplication {
 
