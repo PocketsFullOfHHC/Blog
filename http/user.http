@@ -1,3 +1,3 @@
-GET http://localhost:8080/user/list
+GET http://localhost:8080/user/list?name=test
 
 ###
