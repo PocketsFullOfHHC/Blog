@@ -19,7 +19,7 @@ name=TEST
 
 ###
 
-GET http://localhost:8080/test/list
+GET http://localhost:8080/test/list1
 
 ###
 

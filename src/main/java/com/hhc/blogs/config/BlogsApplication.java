@@ -1,5 +1,6 @@
 package com.hhc.blogs.config;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -9,6 +10,7 @@ import org.springframework.core.env.Environment;
 
 @ComponentScan("com.hhc")
 @SpringBootApplication
+@MapperScan("com.hhc.blogs.mapper")
 public class BlogsApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(BlogsApplication.class);
