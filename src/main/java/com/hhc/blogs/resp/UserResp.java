@@ -7,6 +7,8 @@ public class UserResp {
 
     private String name;
 
+    private String avatar;
+
     public Long getId() {
         return id;
     }
@@ -31,6 +33,14 @@ public class UserResp {
         this.name = name;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -40,6 +50,7 @@ public class UserResp {
         sb.append(", id=").append(id);
         sb.append(", username=").append(username);
         sb.append(", name=").append(name);
+        sb.append(", avatar=").append(avatar);
         sb.append("]");
         return sb.toString();
     }
