@@ -63,117 +63,145 @@ values (1, 1, 'carr');
 insert into `blog` (id, author_id, content)
 values (2, 1, '这是我发布的第一篇blog!');
 
-
-
-
-
-
--- 文档表
-drop table if exists `doc`;
-create table `doc`
+#用户信息表
+drop table if exists `user_info`;
+create table user_info
 (
-    `id`         bigint      not null comment 'id',
-    `ebook_id`   bigint      not null default 0 comment '电子书id',
-    `parent`     bigint      not null default 0 comment '父id',
-    `name`       varchar(50) not null comment '名称',
-    `sort`       int comment '顺序',
-    `view_count` int                  default 0 comment '阅读数',
-    `vote_count` int                  default 0 comment '点赞数',
-    primary key (`id`)
+    id bigint not null,
+    self_intro varchar(2000) null,
+    age int null,
+    gender varchar(20) null,
+    circles mediumtext null,
+    managed_circles mediumtext null,
+    tags mediumtext null,
+    status bool null,
+    constraint user_info_pk
+        primary key (id)
 ) engine = innodb
-  default charset = utf8mb4 comment ='文档';
+  default charset = utf8mb4
+    comment '用户信息表';
 
-insert into `doc` (id, ebook_id, parent, name, sort, view_count, vote_count)
-values (1, 1, 0, '文档1', 1, 0, 0);
-insert into `doc` (id, ebook_id, parent, name, sort, view_count, vote_count)
-values (2, 1, 1, '文档1.1', 1, 0, 0);
-insert into `doc` (id, ebook_id, parent, name, sort, view_count, vote_count)
-values (3, 1, 0, '文档2', 2, 0, 0);
-insert into `doc` (id, ebook_id, parent, name, sort, view_count, vote_count)
-values (4, 1, 3, '文档2.1', 1, 0, 0);
-insert into `doc` (id, ebook_id, parent, name, sort, view_count, vote_count)
-values (5, 1, 3, '文档2.2', 2, 0, 0);
-insert into `doc` (id, ebook_id, parent, name, sort, view_count, vote_count)
-values (6, 1, 5, '文档2.2.1', 1, 0, 0);
-
--- 文档内容，是一种纵向的分表
-drop table if exists `content`;
-create table `content`
+#兴趣圈表
+drop table if exists `circle`;
+create table circle
 (
-    `id`      bigint     not null comment '文档id',
-    `content` mediumtext not null comment '内容',
-    primary key (`id`)
+    id bigint not null,
+    circle_name varchar(100) not null comment '兴趣圈名字',
+    intro mediumtext null comment '介绍',
+    manager_id bigint not null comment '管理者id',
+    created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '创建时间',
+    tags mediumtext null comment '兴趣圈标签',
+    constraint circle_pk
+        primary key (id),
+    constraint circle_user_id_fk
+        foreign key (manager_id) references user (id)
 ) engine = innodb
-  default charset = utf8mb4 comment ='文档内容';
+  default charset = utf8mb4
+    comment '兴趣圈表';
 
--- 用户表
-drop table if exists `user`;
-create table `user`
+# 用户-兴趣圈表
+drop table if exists `user_circle`;
+create table user_circle
 (
-    `id`         bigint      not null comment 'ID',
-    `login_name` varchar(50) not null comment '登陆名',
-    `name`       varchar(50) comment '昵称',
-    `password`   char(32)    not null comment '密码',
-    primary key (`id`),
-    unique key `login_name_unique` (`login_name`)
+    id bigint not null comment 'id',
+    circle_id bigint null,
+    user_id bigint null,
+    manager_id bigint null,
+    constraint user_circle_pk
+        primary key (id),
+    constraint user_circle_circle_id_fk
+        foreign key (circle_id) references circle (id),
+    constraint user_circle_user_id_fk
+        foreign key (user_id) references user (id)
 ) engine = innodb
-  default charset = utf8mb4 comment ='用户';
+  default charset = utf8mb4
+    comment '用户-兴趣圈表';
 
-insert into `user` (id, `login_name`, `name`, `password`)
-values (1, 'test', '测试', 'e70e2222a9d67c4f2eae107533359aa4');
-insert into `user` (id, `login_name`, `name`, `password`)
-values (12, 'admin', 'admin', 'e70e2222a9d67c4f2eae107533359aa4');
-
--- 电子书快照表
-drop table if exists `ebook_snapshot`;
-create table `ebook_snapshot`
+# 关注表
+drop table if exists `follow`;
+create table follow
 (
-    `id`            bigint auto_increment not null comment 'id',
-    `ebook_id`      bigint                not null default 0 comment '电子书id',
-    `date`          date                  not null comment '快照日期',
-    `view_count`    int                   not null default 0 comment '阅读数',
-    `vote_count`    int                   not null default 0 comment '点赞数',
-    `view_increase` int                   not null default 0 comment '阅读增长',
-    `vote_increase` int                   not null default 0 comment '点赞增长',
-    primary key (`id`),
-    unique key `ebook_id_date_unique` (`ebook_id`, `date`)
-) engine = innodb
-  default charset = utf8mb4 comment ='电子书快照表';
+    id bigint not null,
+    like_id bigint not null,
+    beliked_id bigint not null,
+    `follow _time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '关注时间',
+    constraint follow_pk
+        primary key (id),
+    constraint follow_user_id_fk
+        foreign key (like_id) references user (id),
+    constraint follow_user_id_fk_2
+        foreign key (beliked_id) references user (id)
+)
+    comment '关注表';
 
--- # 方案一（ID不连续）：
--- # 删除今天的数据
--- # 为所有的电子书生成一条今天的记录
--- # 更新总阅读数、总点赞数
--- # 更新今日阅读数、今日点赞数
--- #
--- # 方案二（ID连续）：
--- # 为所有的电子书生成一条今天的记录，如果还没有
--- # 更新总阅读数、总点赞数
--- # 更新今日阅读数、今日点赞数
-insert into ebook_snapshot(ebook_id, `date`, view_count, vote_count, view_increase, vote_increase)
-select t1.id, curdate(), 0, 0, 0, 0
-from ebook t1
-where not exists(select 1
-                 from ebook_snapshot t2
-                 where t1.id = t2.ebook_id
-                   and t2.date = curdate());
+#兴趣圈帖子表
+drop table if exists `circle_blog`;
+create table circle_blog
+(
+    id bigint not null comment 'id',
+    author_id bigint not null comment '作者id',
+    circle_id bigint null,
+    publish_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null,
+    content mediumtext not null,
+    vote_num int default 0 null,
+    oppose_num int default 0 null,
+    comment_num int default 0 null,
+    constraint circle_blog_pk
+        primary key (id),
+    constraint circle_blog_user_fk
+        foreign key (author_id) references user (id)
+)engine = innodb
+ default charset = utf8mb4
+    comment '兴趣圈帖子表';
 
-update ebook_snapshot t1, ebook t2
-set t1.view_count = t2.view_count,
-    t1.vote_count = t2.vote_count
-where t1.`date` = curdate()
-  and t1.ebook_id = t2.id;
+# 评论表
+drop table if exists `comment`;
+create table comment
+(
+    id bigint not null comment '评论id',
+    blog_id bigint not null comment 'blog id',
+    commentator_id bigint not null comment '评论人id',
+    content varchar(1000) not null comment '评论内容',
+    comment_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '评论时间',
+    constraint comment_pk
+        primary key (id),
+    constraint comment_blog_id_fk
+        foreign key (blog_id) references blog (id),
+    constraint comment_user_id_fk
+        foreign key (commentator_id) references user (id)
+)engine = innodb
+ default charset = utf8mb4
+    comment '评论表';
 
--- # 获取昨天的数据
-select t1.ebook_id, view_count, vote_count
-from ebook_snapshot t1
-where t1.`date` = date_sub(curdate(), interval 1 day);
+# 点赞/点踩表
+drop table if exists `likes`;
+create table `likes`
+(
+    id bigint not null comment 'id',
+    commentator_id bigint not null comment '点赞人id',
+    blog_id bigint not null comment '被赞贴id',
+    is_like boolean null comment '是点赞（还是点踩）',
+    comment_time timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '时间',
+    constraint like_pk
+        primary key (id),
+    constraint like_blog_id_fk
+        foreign key (blog_id) references blog (id),
+    constraint like_user_id_fk
+        foreign key (commentator_id) references user (id)
+)
+    comment '点赞/反对表';
 
--- # 用left join 更新数据，不管昨天的有没有，如果昨天有数据，那就更新，如果没有，那就值为0
-update ebook_snapshot t1 left join (select ebook_id, view_count, vote_count
-                                    from ebook_snapshot
-                                    where `date` = date_sub(curdate(), interval 1 day)) t2
-    on t1.ebook_id = t2.ebook_id
-set t1.view_increase = (t1.view_count - ifnull(t2.view_count, 0)),
-    t1.vote_increase = (t1.vote_count - ifnull(t2.vote_count, 0))
-where t1.`date` = curdate();
+# 消息表
+drop table if exists `message`;
+create table message
+(
+    id bigint not null,
+    sender_id bigint null,
+    receiver_id bigint null,
+    content varchar(2000) null,
+    time timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    constraint message_pk
+        primary key (id)
+)engine = innodb
+ default charset = utf8mb4
+    comment '消息表';
