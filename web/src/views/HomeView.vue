@@ -6,20 +6,36 @@
     <a-layout style="padding: 24px 0; background: #fff">
       <the-sider></the-sider>
       <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
-        Content
+        <pre>
+          {{blogs}}
+        </pre>
       </a-layout-content>
     </a-layout>
   </a-layout-content>
 </template>
 
 <script>
-  import { defineComponent} from 'vue';
+  import { defineComponent, onMounted, ref } from 'vue';
   import TheSider from '@/components/TheSider.vue';
+  import axios from 'axios';
   export default defineComponent({
     name:'homeView',
     components: {
       TheSider,
-    }
+    },
+    setup(){
+      const blogs = ref();
+      onMounted(() =>{
+        axios.get("/blog/list").then((response) =>{
+          const data = response.data;
+          blogs.value = data.content;
+          console.log(response);
+        });
+      });
+      return{
+        blogs
+      }
+    },
   })
 </script>
 
