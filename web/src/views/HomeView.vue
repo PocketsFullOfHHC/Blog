@@ -14,7 +14,7 @@
   </a-layout-content>
 </template>
 
-<script>
+<script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
   import TheSider from '@/components/TheSider.vue';
   import axios from 'axios';

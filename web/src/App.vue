@@ -5,12 +5,11 @@
         <the-footer></the-footer>
     </a-layout>
 </template>
-<script>
+<script lang="ts">
     import {defineComponent} from 'vue';
     import TheHeader from '@/components/TheHeader.vue';
     import TheFooter from '@/components/TheFooter.vue';
     import HomeView from '@/views/HomeView.vue';
-
     export default defineComponent({
         components: {
             TheHeader,

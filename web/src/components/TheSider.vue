@@ -44,10 +44,11 @@
     </a-layout-sider>
 </template>
 
-<script>
-    export default {
-        name: "TheSider"
-    }
+<script lang="ts">
+    import {defineComponent} from 'vue';
+    export default defineComponent ({
+        name: "TheSider",
+    })
 </script>
 
 <style scoped>
