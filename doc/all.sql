@@ -65,6 +65,9 @@ values (1, 1, 'carr');
 insert into `blog` (id, author_id, content)
 values (2, 1, '这是我发布的第一篇blog!');
 
+# 增加图片字段
+alter table blog add photo varchar(100) null default 'default.png';
+
 #用户信息表
 drop table if exists `user_info`;
 create table user_info
@@ -264,4 +267,4 @@ create table `photo_likes`
 )
     comment '照片点赞表';
 
-# 第四天：创建两个表，博客表新增字段并重构持久层，前端展示博客，带参查询博客
+# 前端展示博客，带参查询博客

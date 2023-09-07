@@ -17,6 +17,8 @@ public class BlogResp {
 
     private String content;
 
+    private String photo;
+
     public Long getId() {
         return id;
     }
@@ -73,6 +75,14 @@ public class BlogResp {
         this.content = content;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -85,6 +95,7 @@ public class BlogResp {
         sb.append(", voteNum=").append(voteNum);
         sb.append(", opposeNum=").append(opposeNum);
         sb.append(", commentNum=").append(commentNum);
+        sb.append(", photo=").append(photo);
         sb.append(", content=").append(content);
         sb.append("]");
         return sb.toString();

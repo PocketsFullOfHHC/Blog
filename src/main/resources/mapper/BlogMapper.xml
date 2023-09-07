@@ -8,6 +8,7 @@
     <result column="vote_num" jdbcType="INTEGER" property="voteNum" />
     <result column="oppose_num" jdbcType="INTEGER" property="opposeNum" />
     <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
+    <result column="photo" jdbcType="VARCHAR" property="photo" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hhc.blogs.domain.Blog">
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
@@ -71,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, author_id, publish_time, vote_num, oppose_num, comment_num
+    id, author_id, publish_time, vote_num, oppose_num, comment_num, photo
   </sql>
   <sql id="Blob_Column_List">
     content
@@ -127,10 +128,10 @@
   <insert id="insert" parameterType="com.hhc.blogs.domain.Blog">
     insert into blog (id, author_id, publish_time, 
       vote_num, oppose_num, comment_num, 
-      content)
+      photo, content)
     values (#{id,jdbcType=BIGINT}, #{authorId,jdbcType=BIGINT}, #{publishTime,jdbcType=TIMESTAMP}, 
       #{voteNum,jdbcType=INTEGER}, #{opposeNum,jdbcType=INTEGER}, #{commentNum,jdbcType=INTEGER}, 
-      #{content,jdbcType=LONGVARCHAR})
+      #{photo,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hhc.blogs.domain.Blog">
     insert into blog
@@ -152,6 +153,9 @@
       </if>
       <if test="commentNum != null">
         comment_num,
+      </if>
+      <if test="photo != null">
+        photo,
       </if>
       <if test="content != null">
         content,
@@ -175,6 +179,9 @@
       </if>
       <if test="commentNum != null">
         #{commentNum,jdbcType=INTEGER},
+      </if>
+      <if test="photo != null">
+        #{photo,jdbcType=VARCHAR},
       </if>
       <if test="content != null">
         #{content,jdbcType=LONGVARCHAR},
@@ -208,6 +215,9 @@
       <if test="record.commentNum != null">
         comment_num = #{record.commentNum,jdbcType=INTEGER},
       </if>
+      <if test="record.photo != null">
+        photo = #{record.photo,jdbcType=VARCHAR},
+      </if>
       <if test="record.content != null">
         content = #{record.content,jdbcType=LONGVARCHAR},
       </if>
@@ -224,6 +234,7 @@
       vote_num = #{record.voteNum,jdbcType=INTEGER},
       oppose_num = #{record.opposeNum,jdbcType=INTEGER},
       comment_num = #{record.commentNum,jdbcType=INTEGER},
+      photo = #{record.photo,jdbcType=VARCHAR},
       content = #{record.content,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -236,7 +247,8 @@
       publish_time = #{record.publishTime,jdbcType=TIMESTAMP},
       vote_num = #{record.voteNum,jdbcType=INTEGER},
       oppose_num = #{record.opposeNum,jdbcType=INTEGER},
-      comment_num = #{record.commentNum,jdbcType=INTEGER}
+      comment_num = #{record.commentNum,jdbcType=INTEGER},
+      photo = #{record.photo,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -259,6 +271,9 @@
       <if test="commentNum != null">
         comment_num = #{commentNum,jdbcType=INTEGER},
       </if>
+      <if test="photo != null">
+        photo = #{photo,jdbcType=VARCHAR},
+      </if>
       <if test="content != null">
         content = #{content,jdbcType=LONGVARCHAR},
       </if>
@@ -272,6 +287,7 @@
       vote_num = #{voteNum,jdbcType=INTEGER},
       oppose_num = #{opposeNum,jdbcType=INTEGER},
       comment_num = #{commentNum,jdbcType=INTEGER},
+      photo = #{photo,jdbcType=VARCHAR},
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -281,7 +297,8 @@
       publish_time = #{publishTime,jdbcType=TIMESTAMP},
       vote_num = #{voteNum,jdbcType=INTEGER},
       oppose_num = #{opposeNum,jdbcType=INTEGER},
-      comment_num = #{commentNum,jdbcType=INTEGER}
+      comment_num = #{commentNum,jdbcType=INTEGER},
+      photo = #{photo,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

@@ -15,6 +15,8 @@ public class Blog {
 
     private Integer commentNum;
 
+    private String photo;
+
     private String content;
 
     public Long getId() {
@@ -65,6 +67,14 @@ public class Blog {
         this.commentNum = commentNum;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     public String getContent() {
         return content;
     }
@@ -85,6 +95,7 @@ public class Blog {
         sb.append(", voteNum=").append(voteNum);
         sb.append(", opposeNum=").append(opposeNum);
         sb.append(", commentNum=").append(commentNum);
+        sb.append(", photo=").append(photo);
         sb.append(", content=").append(content);
         sb.append("]");
         return sb.toString();

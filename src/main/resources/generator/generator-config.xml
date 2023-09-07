@@ -42,7 +42,7 @@
                              type="XMLMAPPER"/>
         <!-- 生成过一遍的mapper就不需要再生成一次了 -->
         <!-- <table tableName="test" domainObjectName="Test"/> -->
-        <table tableName="user" domainObjectName="User"/>
-        <!-- table tableName="blog" domainObjectName="Blog"/> -->
+        <!-- <table tableName="user" domainObjectName="User"/> -->
+        <table tableName="blog" domainObjectName="Blog"/>
     </context>
 </generatorConfiguration>
