@@ -51,11 +51,13 @@ create table blog
 
 alter table blog add circle_id bigint null;
 
+# 增加字段
 alter table blog
     add oppose_num int default 0 null;
 alter table blog
     add comment_num int default 0 null;
 
+# 删除字段
 ALTER TABLE blog DROP COLUMN circle_id;
 
 insert into `blog` (id, author_id, content)
@@ -205,3 +207,61 @@ create table message
 )engine = innodb
  default charset = utf8mb4
     comment '消息表';
+
+# 照片表
+drop table if exists `photo`;
+create table photo(
+    id bigint not null comment 'id',
+    album_id bigint not null comment '相册id',
+    name varchar(100) null comment '图片名称',
+    photo varchar(100) not null default 'default.png' comment '图片',
+    up_time timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '上传时间',
+    view_count int not null comment '浏览量',
+    vote_count int not null comment '点赞量',
+    constraint album_pk
+        primary key (id),
+    constraint photo_user_album_fk
+        foreign key (album_id) references user_album (id)
+)engine = innodb
+ default charset = utf8mb4
+    comment '相册表';
+
+# 用户-相册表
+drop table if exists `user_album`;
+create table user_album(
+    id bigint not null comment 'id',
+    user_id bigint not null comment '用户id',
+    name varchar(100) not null comment '相册名称',
+    tag varchar(100) not null comment '标签',
+    description varchar(100) not null comment '描述',
+    up_time timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '创建时间',
+    photo_count int not null comment '照片总数',
+    view_count int not null comment '浏览总量',
+    vote_count int not null comment '点赞总量',
+    cover varchar(200) null comment '封面',
+    constraint album_pk
+        primary key (id),
+    constraint user_album_user_fk
+        foreign key (user_id) references user (id)
+)engine = innodb
+ default charset = utf8mb4
+    comment '用户-相册表';
+
+# 照片点赞表
+drop table if exists `photo_likes`;
+create table `photo_likes`
+(
+    id bigint not null comment 'id',
+    photo_liker_id bigint not null comment '点赞人id',
+    photo_id bigint not null comment '被赞照片id',
+    photo_like_time timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '照片点赞时间',
+    constraint photo_likes_pk
+        primary key (id),
+    constraint photo_likes_photo_fk
+        foreign key (photo_id) references photo (id),
+    constraint photo_likes_user_fk
+        foreign key (photo_liker_id) references user (id)
+)
+    comment '照片点赞表';
+
+# 第四天：创建两个表，博客表新增字段并重构持久层，前端展示博客，带参查询博客
