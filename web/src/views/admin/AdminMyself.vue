@@ -19,6 +19,7 @@
     import TheSider from '@/components/TheSider.vue';
     import {defineComponent, onMounted, ref} from 'vue';
     import axios from "axios";
+    import { message } from "ant-design-vue";
     export default defineComponent({
         name: "AdminMyself",
         components: {
@@ -28,12 +29,16 @@
         setup(){
             let blogList = ref();
             const getAllBlog = () => {
-                axios.get("/blog/list").then((response) =>{
-                    const data = response.data;
-                    blogList.value = data.content;
-                    console.log(response);
-                    console.log(blogList.value);
-                })
+                axios.get("/blog/list").then(
+                    (response) =>{
+                        blogList.value = response.data.content ? response.data.content :[];
+                        console.log(response);
+                        console.log(blogList.value);
+                    },
+                    (error) => {
+                        message.error(error);
+                    }
+                )
             };
             onMounted(()=>{
                 getAllBlog();
