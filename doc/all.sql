@@ -267,4 +267,4 @@ create table `photo_likes`
 )
     comment '照片点赞表';
 
-# 带参查询博客
+# 第六天：注册前后端交互，登录后端，登录前后端交互，valid用户校验，展示姓名

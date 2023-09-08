@@ -1,12 +1,12 @@
 package com.hhc.blogs.controller;
 
 import com.hhc.blogs.req.UserReq;
+import com.hhc.blogs.req.UserSignUpReq;
 import com.hhc.blogs.resp.CommonResp;
 import com.hhc.blogs.resp.UserResp;
+import com.hhc.blogs.resp.UserSignUpResp;
 import com.hhc.blogs.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -24,5 +24,16 @@ public class UserController {
         List<UserResp> list = userService.list(req);
         resp.setContent(list);
         return resp;
+    }
+
+    /**
+     * 注册
+     * */
+    @PostMapping("/signup")
+    public CommonResp<UserSignUpResp> SignUp(@RequestBody UserSignUpReq userSignUpReq){
+        UserSignUpResp userSignUpResp = userService.SignUp(userSignUpReq);
+        CommonResp<UserSignUpResp> userSignUpRespCommonResp = new CommonResp<>();
+        userSignUpRespCommonResp.setContent(userSignUpResp);
+        return userSignUpRespCommonResp;
     }
 }
