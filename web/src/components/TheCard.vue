@@ -1,5 +1,4 @@
 <template>
-
     <a-comment id="comment">
         <template #actions>
             <span key="comment-basic-like">
@@ -52,7 +51,6 @@
             </a-tooltip>
         </template>
     </a-comment>
-
 </template>
 
 <script lang="ts">
