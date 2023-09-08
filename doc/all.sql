@@ -267,4 +267,4 @@ create table `photo_likes`
 )
     comment '照片点赞表';
 
-# 前端展示博客，带参查询博客
+# 带参查询博客

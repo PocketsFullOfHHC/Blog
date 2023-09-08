@@ -1,5 +1,6 @@
 <template>
-    <a-comment>
+
+    <a-comment id="comment">
         <template #actions>
             <span key="comment-basic-like">
                 <a-tooltip title="Like">
@@ -37,19 +38,21 @@
         </template>
         <template #content>
             <a-image
-                    :width="200"
+                    :width="350"
                     src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                    style="padding: 10px 0 10px 0"
             />
             <p>
                 {{blogList.content}}
             </p>
         </template>
         <template #datetime>
-            <a-tooltip :title="dayjs().format('2023-09-08 12:25:22')">
+            <a-tooltip :title="dayjs().format('YYYY-MM-DD HH:mm:ss')">
                 <span>{{ dayjs().to(dayjs(blogList.publishTime)) }}</span>
             </a-tooltip>
         </template>
     </a-comment>
+
 </template>
 
 <script lang="ts">
@@ -101,5 +104,9 @@
 </script>
 
 <style scoped>
-
+    #comment{
+        width:400px;
+        margin: 0 30px 0 10px;
+        float: left;
+    }
 </style>
