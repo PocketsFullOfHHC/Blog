@@ -1,80 +1,101 @@
 <template>
-    <a-list item-layout="vertical" size="large" :pagination="pagination" :data-source="listData">
-        <template #renderItem="{ item }">
-            <a-list-item key="item.title">
-                <template #actions>
-                  <span v-for="{ icon, text } in actions" :key="icon">
-                    <component :is="icon" style="margin-right: 8px" />
-                    {{ text }}
-                  </span>
-                </template>
-                <template #extra>
-                    <img
-                            width="272"
-                            alt="logo"
-                            src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                    />
-                </template>
-                <a-list-item-meta :description="item.description">
-                    <template #title>
-                        <a :href="item.href">{{ item.title }}</a>
+    <a-comment>
+        <template #actions>
+            <span key="comment-basic-like">
+                <a-tooltip title="Like">
+                    <template v-if="action === 'liked'">
+                        <LikeFilled @click="like" />
                     </template>
-                    <template #avatar><a-avatar :src="item.avatar" /></template>
-                </a-list-item-meta>
-                {{ item.content }}
-            </a-list-item>
+                    <template v-else>
+                        <LikeOutlined @click="like" />
+                    </template>
+                </a-tooltip>
+                <span style="padding-left: 8px; cursor: auto">
+                    {{ likes }}
+                </span>
+            </span>
+            <span key="comment-basic-dislike">
+                <a-tooltip title="Dislike">
+                    <template v-if="action === 'disliked'">
+                        <DislikeFilled @click="dislike" />
+                    </template>
+                    <template v-else>
+                        <DislikeOutlined @click="dislike" />
+                    </template>
+                </a-tooltip>
+                <span style="padding-left: 8px; cursor: auto">
+                    {{ dislikes }}
+                </span>
+            </span>
+            <span key="comment-basic-reply-to">
+                Reply to
+            </span>
         </template>
-    </a-list>
+        <template #author><a>{{blogList.authorId}}</a></template>
+        <template #avatar>
+            <a-avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />
+        </template>
+        <template #content>
+            <a-image
+                    :width="200"
+                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+            />
+            <p>
+                {{blogList.content}}
+            </p>
+        </template>
+        <template #datetime>
+            <a-tooltip :title="dayjs().format('2023-09-08 12:25:22')">
+                <span>{{ dayjs().to(dayjs(blogList.publishTime)) }}</span>
+            </a-tooltip>
+        </template>
+    </a-comment>
 </template>
 
 <script lang="ts">
-    import { StarOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons-vue';
-    import {defineComponent} from "vue";
+    import dayjs from 'dayjs';
+    import { LikeFilled, LikeOutlined, DislikeFilled, DislikeOutlined } from '@ant-design/icons-vue';
+    import { defineComponent, ref } from 'vue';
+    import relativeTime from 'dayjs/plugin/relativeTime';
+    dayjs.extend(relativeTime);
     export default defineComponent({
         name: "TheCard",
         components:{
-            StarOutlined,
+            LikeFilled,
             LikeOutlined,
-            MessageOutlined,
+            DislikeFilled,
+            DislikeOutlined,
         },
-        setup(){
-            const listData = [];
-            for (let i = 0; i < 23; i++) {
-                listData.push({
-                    href: 'https://www.antdv.com/',
-                    title: `ant design vue part ${i}`,
-                    avatar: 'https://joeschmoe.io/api/v1/random',
-                    description:
-                        'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-                    content:
-                        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-                });
-            }
-            const pagination = {
-                onChange: (page: number) => {
-                    console.log(page);
-                },
-                pageSize: 3,
+        props: ['blogList'],
+        // setup中使用props
+        setup(props) {
+            const curDate = dayjs(props.blogList.publishTime).format();
+            console.log(curDate);
+
+            const likes = ref<number>(0);
+            const dislikes = ref<number>(0);
+            const action = ref<string>();
+
+            const like = () => {
+                likes.value = 1;
+                dislikes.value = 0;
+                action.value = 'liked';
             };
-            const actions = [
-                {
-                    icon: StarOutlined,
-                    text: '156',
-                },
-                {
-                    icon: LikeOutlined,
-                    text: '156',
-                },
-                {
-                    icon: MessageOutlined,
-                    text: '2',
-                },
-            ];
-            return{
-                listData,
-                pagination,
-                actions,
-            }
+
+            const dislike = () => {
+                likes.value = 0;
+                dislikes.value = 1;
+                action.value = 'disliked';
+            };
+
+            return {
+                likes,
+                dislikes,
+                action,
+                like,
+                dislike,
+                dayjs,
+            };
         },
     });
 </script>
