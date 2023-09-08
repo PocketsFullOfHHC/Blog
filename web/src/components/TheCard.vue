@@ -106,7 +106,7 @@
 <style scoped>
     #comment{
         width:400px;
-        margin: 0 30px 0 10px;
+        margin: 0 50px 0 10px;
         float: left;
     }
 </style>
