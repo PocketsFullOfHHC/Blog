@@ -6,6 +6,9 @@ import com.hhc.blogs.resp.CommonResp;
 import com.hhc.blogs.resp.UserResp;
 import com.hhc.blogs.resp.UserSignUpResp;
 import com.hhc.blogs.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -14,6 +17,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     @Resource
     private UserService userService;
@@ -31,6 +36,9 @@ public class UserController {
      * */
     @PostMapping("/signup")
     public CommonResp<UserSignUpResp> SignUp(@RequestBody UserSignUpReq userSignUpReq){
+        // 后端第二次密码加密
+        userSignUpReq.setPassword(DigestUtils.md5DigestAsHex(userSignUpReq.getPassword().getBytes()));
+        LOG.info("加密后的密码：{}",userSignUpReq.getPassword());
         UserSignUpResp userSignUpResp = userService.SignUp(userSignUpReq);
         CommonResp<UserSignUpResp> userSignUpRespCommonResp = new CommonResp<>();
         userSignUpRespCommonResp.setContent(userSignUpResp);

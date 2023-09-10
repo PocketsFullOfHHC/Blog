@@ -49,6 +49,8 @@
     import {defineComponent, ref, reactive} from 'vue';
     import axios from "axios";
     import {message} from "ant-design-vue";
+    declare let hexMd5: any;
+    declare let KEY: any;
     export default defineComponent ({
         name: "TheHeader",
         setup(){
@@ -69,6 +71,8 @@
                 signUpVisible.value = true;
             };
             const handleSignUpOk = () => {
+                // 前端密码第一次加密
+                signUpUser.password = hexMd5(signUpUser.password + KEY);
                 axios.post("/user/signup", signUpUser).then((response) => {
                     if(response.data.success){
                         message.success('注册成功');
