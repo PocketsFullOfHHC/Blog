@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
+ * 出现错误时不会进入到对应的controller中，而是进入到这里
  * 统一异常处理、数据预处理等
  */
 // @ControllerAdvice注解对Controller做一些统一的异常处理
