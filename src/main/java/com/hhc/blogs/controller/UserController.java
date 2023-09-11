@@ -1,8 +1,10 @@
 package com.hhc.blogs.controller;
 
+import com.hhc.blogs.req.UserLoginReq;
 import com.hhc.blogs.req.UserReq;
 import com.hhc.blogs.req.UserSignUpReq;
 import com.hhc.blogs.resp.CommonResp;
+import com.hhc.blogs.resp.UserLoginResp;
 import com.hhc.blogs.resp.UserResp;
 import com.hhc.blogs.resp.UserSignUpResp;
 import com.hhc.blogs.service.UserService;
@@ -44,5 +46,19 @@ public class UserController {
         CommonResp<UserSignUpResp> userSignUpRespCommonResp = new CommonResp<>();
         userSignUpRespCommonResp.setContent(userSignUpResp);
         return userSignUpRespCommonResp;
+    }
+
+    /**
+     * 登录
+     * */
+    @PostMapping("/login")
+    public CommonResp<UserLoginResp> Login(@Valid @RequestBody UserLoginReq userLoginReq){
+        // 后端第二次密码加密
+        userLoginReq.setPassword(DigestUtils.md5DigestAsHex(userLoginReq.getPassword().getBytes()));
+        LOG.info("加密后的密码：{}",userLoginReq.getPassword());
+        UserLoginResp userLoginResp = userService.Login(userLoginReq);
+        CommonResp<UserLoginResp> userLoginRespCommonResp = new CommonResp<>();
+        userLoginRespCommonResp.setContent(userLoginResp);
+        return userLoginRespCommonResp;
     }
 }

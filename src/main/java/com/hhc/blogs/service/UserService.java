@@ -5,8 +5,10 @@ import com.hhc.blogs.domain.UserExample;
 import com.hhc.blogs.exception.BusinessException;
 import com.hhc.blogs.exception.BusinessExceptionCode;
 import com.hhc.blogs.mapper.UserMapper;
+import com.hhc.blogs.req.UserLoginReq;
 import com.hhc.blogs.req.UserReq;
 import com.hhc.blogs.req.UserSignUpReq;
+import com.hhc.blogs.resp.UserLoginResp;
 import com.hhc.blogs.resp.UserResp;
 import com.hhc.blogs.resp.UserSignUpResp;
 import com.hhc.blogs.util.CopyUtil;
@@ -64,6 +66,28 @@ public class UserService {
             return userSignUpResp;
         } else {
             throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+        }
+    }
+
+    /**
+     * 用户登录
+     * */
+    public UserLoginResp Login(UserLoginReq userLoginReq){
+        // 查询用户名
+        LOG.info("开始登录");
+        User userDB = SelectByUsername(userLoginReq.getUsername());
+        if(ObjectUtils.isEmpty(userDB)){
+            LOG.info("用户名不存在，{}", userLoginReq.getUsername());
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+        } else {
+            if(userDB.getPassword().equals(userLoginReq.getPassword())){
+                LOG.info("登录成功");
+                UserLoginResp userLoginResp = CopyUtil.copy(userDB, UserLoginResp.class);
+                return userLoginResp;
+            } else {
+                LOG.info("密码错误，输入密码：{}，数据库密码：{}", userLoginReq.getPassword(), userDB.getPassword());
+                throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+            }
         }
     }
 

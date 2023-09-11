@@ -98,7 +98,7 @@
                     if (formState.checkPass !== '') {
                         checked.value = false;
                         // 修复报错：加!
-                        formRef.value!.validateFields('checkPass');
+                        formRef.value?.validateFields('checkPass');
                     }
                     return Promise.resolve();
                 }
@@ -172,12 +172,28 @@
              */
             const signInVisible = ref(false);
 
+            const signInUser = reactive({
+                username: '',
+                password: ''
+            });
+
             const popSignIn = () => {
                 signInVisible.value = true;
             };
 
             const handleSignInOk = () => {
-                signInVisible.value = false;
+                console.log("开始登录");
+                // 前端密码第一次加密
+                signInUser.password = hexMd5(signInUser.password + KEY);
+                axios.post("/user/login", signInUser).then((response) => {
+                    const data = response.data;
+                    if (data.success) {
+                        message.success("登录成功！");
+                        signInVisible.value = false;
+                    } else {
+                        message.error(data.message);
+                    }
+                })
             };
 
             return{
