@@ -9,11 +9,12 @@
             <a-menu-item key="1">nav 1</a-menu-item>
             <a-menu-item key="2">nav 2</a-menu-item>
             <a-menu-item key="3">nav 3</a-menu-item>
-            <a-menu-item key="4" :style="{marginLeft:'auto'}" @click="popSignIn">登录</a-menu-item>
-            <a-menu-item key="5" @click="popSignUp">注册</a-menu-item>
+            <a-menu-item key="4" v-if="!user.id" :style="{marginLeft:'auto'}" @click="popSignIn">登录</a-menu-item>
+            <a-menu-item key="5" v-if="!user.id" @click="popSignUp">注册</a-menu-item>
+            <a-menu-item key="6" v-if="!!user.id" :style="{marginLeft:'auto'}">欢迎您：{{user.name}}</a-menu-item>
         </a-menu>
     </a-layout-header>
-    <a-modal v-model:open="signInVisible" title="登录" @ok="handleSignInOk">
+    <a-modal v-model:open="signInVisible" title="登录" @ok="handleSignInOk" ok-text="登录" cancel-text="取消">
         <a-form :label-col="{ span: 3 }" :wrapper-col="{ span: 21 }">
             <a-form-item label="用户名">
                 <a-input v-model:value="signInUser.username" placeholder="请输入用户名"/>
@@ -64,11 +65,12 @@
 </template>
 
 <script lang="ts">
-    import {defineComponent, ref, reactive} from 'vue';
+    import {defineComponent, ref, reactive, computed} from 'vue';
     import axios from "axios";
     import { message } from "ant-design-vue";
     import type { Rule } from 'ant-design-vue/es/form';
     import type { FormInstance } from 'ant-design-vue';
+    import store from '@/store'
     declare let hexMd5: any;
     declare let KEY: any;
 
@@ -97,7 +99,7 @@
                 } else {
                     if (formState.checkPass !== '') {
                         checked.value = false;
-                        // 修复报错：加!
+                        // 修复报错：加？
                         formRef.value?.validateFields('checkPass');
                     }
                     return Promise.resolve();
@@ -170,6 +172,9 @@
             /**
              * 登录
              */
+            // 实时监听user的变化
+            const user = computed(() => store.state.user);
+
             const signInVisible = ref(false);
 
             const signInUser = reactive({
@@ -189,6 +194,8 @@
                     const data = response.data;
                     if (data.success) {
                         message.success("登录成功！");
+                        // 存入vuex中的state里
+                        store.commit("setUser", data.content);
                         signInVisible.value = false;
                     } else {
                         message.error(data.message);
@@ -214,6 +221,7 @@
                 handleFinishFailed,
                 handleValidate,
                 checked,
+                user,
             }
         }
     })
