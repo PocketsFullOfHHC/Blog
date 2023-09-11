@@ -16,10 +16,10 @@
     <a-modal v-model:open="signInVisible" title="登录" @ok="handleSignInOk">
         <a-form :label-col="{ span: 3 }" :wrapper-col="{ span: 21 }">
             <a-form-item label="用户名">
-                <a-input placeholder="请输入用户名"/>
+                <a-input v-model:value="signInUser.username" placeholder="请输入用户名"/>
             </a-form-item>
             <a-form-item label="密码">
-                <a-input type="password" placeholder="请输入密码"/>
+                <a-input v-model:value="signInUser.password" type="password" placeholder="请输入密码"/>
             </a-form-item>
         </a-form>
     </a-modal>
@@ -173,8 +173,8 @@
             const signInVisible = ref(false);
 
             const signInUser = reactive({
-                username: '',
-                password: ''
+                username: 'test2',
+                password: '111222333'
             });
 
             const popSignIn = () => {
@@ -203,6 +203,7 @@
                 signUpVisible,
                 handleSignInOk,
                 handleSignUpOk,
+                signInUser,
                 signUpUser,
                 confirmPassword,
 
