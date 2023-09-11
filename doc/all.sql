@@ -266,5 +266,3 @@ create table `photo_likes`
         foreign key (photo_liker_id) references user (id)
 )
     comment '照片点赞表';
-
-# 第六天：登录后端，登录前后端交互
