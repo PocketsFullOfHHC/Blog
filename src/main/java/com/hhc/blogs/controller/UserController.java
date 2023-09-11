@@ -12,6 +12,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,7 +36,7 @@ public class UserController {
      * 注册
      * */
     @PostMapping("/signup")
-    public CommonResp<UserSignUpResp> SignUp(@RequestBody UserSignUpReq userSignUpReq){
+    public CommonResp<UserSignUpResp> SignUp(@Valid @RequestBody UserSignUpReq userSignUpReq){
         // 后端第二次密码加密
         userSignUpReq.setPassword(DigestUtils.md5DigestAsHex(userSignUpReq.getPassword().getBytes()));
         LOG.info("加密后的密码：{}",userSignUpReq.getPassword());

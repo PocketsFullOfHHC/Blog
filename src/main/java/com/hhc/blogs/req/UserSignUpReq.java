@@ -1,8 +1,15 @@
 package com.hhc.blogs.req;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+
 public class UserSignUpReq {
+    @NotEmpty(message = "【用户名】不能为空")
     String username;
+    @NotEmpty(message = "【昵称】不能为空")
     String name;
+    @NotEmpty(message = "【密码】不能为空")
+    @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,32}$", message = "【密码】至少包含数字和英文")
     String password;
 
     public String getUsername() {
