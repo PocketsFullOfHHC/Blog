@@ -1,11 +1,10 @@
 package com.hhc.blogs.controller;
 
+import com.hhc.blogs.req.BlogPublishReq;
 import com.hhc.blogs.resp.BlogResp;
 import com.hhc.blogs.resp.CommonResp;
 import com.hhc.blogs.service.BlogService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -22,5 +21,12 @@ public class BlogController {
         List<BlogResp> list = blogService.list();
         resp.setContent(list);
         return resp;
+    }
+
+    @PostMapping("/publish")
+    public CommonResp blogPublish(@RequestBody BlogPublishReq blogPublishReq) {
+        CommonResp<Object> commonResp = new CommonResp<>();
+        blogService.publish(blogPublishReq);
+        return commonResp;
     }
 }

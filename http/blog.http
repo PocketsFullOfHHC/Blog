@@ -2,3 +2,13 @@
 GET http://localhost:8080/blog/list
 
 ###
+
+POST http://localhost:8080/blog/publish
+Content-Type: application/json
+
+{
+  "authorId": "355950515865128960",
+  "content": "<p>QAQ</p>"
+}
+
+###

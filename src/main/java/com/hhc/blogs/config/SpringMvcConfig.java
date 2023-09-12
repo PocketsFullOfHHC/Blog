@@ -21,7 +21,9 @@ public class SpringMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns(
                         "/user/**",
                         "/test/**",
-                        "/redis/**"
+                        "/redis/**",
+                        // 暂时加上测试后端
+                        "/blog/**"
                 );
     }
 }
