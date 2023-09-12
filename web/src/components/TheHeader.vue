@@ -7,7 +7,7 @@
                 :style="{ lineHeight: '64px' }"
         >
             <a-menu-item key="1"><router-link to="/">首页</router-link></a-menu-item>
-            <a-menu-item key="2" :style="user.id ? {} : { display:'none' }"><router-link to="/myself">我的贴子</router-link></a-menu-item>
+            <a-menu-item key="2" v-if="user.id"><router-link to="/myself">我的贴子</router-link></a-menu-item>
             <a-menu-item key="3">nav 3</a-menu-item>
             <a-menu-item key="4" v-if="!user.id" :style="{marginLeft:'auto'}" @click="popSignIn">登录</a-menu-item>
             <a-menu-item key="5" v-if="!user.id" @click="popSignUp">注册</a-menu-item>

@@ -8,6 +8,7 @@ import * as Icons from '@ant-design/icons-vue';
 import 'ant-design-vue/dist/reset.css';
 import axios  from "axios";
 import {message} from "ant-design-vue";
+import {Tool} from "@/util/tool";
 
 axios.defaults.baseURL = process.env.VUE_APP_SERVER;
 
@@ -20,6 +21,12 @@ app.use(store).use(router).use(Antd).mount('#app');
 // 请求拦截器
 axios.interceptors.request.use(function (config) {
     console.log('请求参数：', config);
+    // 向请求头header中添加token方便后端做校验来判断是否需要拦截
+    const token = store.state.user.token;
+    if (Tool.isNotEmpty(token)) {
+        config.headers.token = token;
+        console.log("请求headers增加token:", token);
+    }
     return config;
 }, error => {
     return Promise.reject(error);
