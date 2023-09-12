@@ -1,5 +1,5 @@
 <template>
-    <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }" id="components-layout-demo-fixed">
+    <a-layout-header :style="{ position: 'fixed', zIndex: 1}" id="components-layout-demo-fixed">
         <div class="logo" />
         <a-menu
                 theme="dark"
@@ -11,7 +11,32 @@
             <a-menu-item key="3">nav 3</a-menu-item>
             <a-menu-item key="4" v-if="!user.id" :style="{marginLeft:'auto'}" @click="popSignIn">登录</a-menu-item>
             <a-menu-item key="5" v-if="!user.id" @click="popSignUp">注册</a-menu-item>
-            <a-menu-item key="6" v-if="!!user.id" :style="{marginLeft:'auto'}">欢迎您：{{user.name}}</a-menu-item>
+            <a-menu-item key="6" v-if="user.id" :style="{marginLeft:'auto'}">
+                <a-dropdown>
+                    <a class="ant-dropdown-link" @click.prevent>您好：{{user.name}}<DownOutlined/></a>
+                    <template #overlay>
+                        <a-menu>
+                            <a-menu-item>
+                                <router-link to="">
+                                    <a-button type="text">修改信息</a-button>
+                                </router-link>
+                            </a-menu-item>
+                            <a-menu-item>
+                                <a-popconfirm
+                                        title="确认退出登录?"
+                                        ok-text="是"
+                                        cancel-text="否"
+                                        @confirm="logout()"
+                                >
+                                    <router-link to="">
+                                        <a-button type="text">退出登录</a-button>
+                                    </router-link>
+                                </a-popconfirm>
+                            </a-menu-item>
+                        </a-menu>
+                    </template>
+                </a-dropdown>
+            </a-menu-item>
         </a-menu>
     </a-layout-header>
     <a-modal v-model:open="signInVisible" title="登录" @ok="handleSignInOk" ok-text="登录" cancel-text="取消">
@@ -65,7 +90,8 @@
 </template>
 
 <script lang="ts">
-    import {defineComponent, ref, reactive, computed} from 'vue';
+    import { defineComponent, ref, reactive, computed } from 'vue';
+    import { DownOutlined } from '@ant-design/icons-vue';
     import axios from "axios";
     import { message } from "ant-design-vue";
     import type { Rule } from 'ant-design-vue/es/form';
@@ -77,7 +103,6 @@
     export default defineComponent ({
         name: "TheHeader",
         setup(){
-
             /**
              * 密码校验
              */
@@ -194,15 +219,31 @@
                     const data = response.data;
                     if (data.success) {
                         message.success("登录成功！");
+                        signInVisible.value = false;
                         // 存入vuex中的state里
                         store.commit("setUser", data.content);
-                        signInVisible.value = false;
                     } else {
                         message.error(data.message);
                     }
                 })
             };
 
+            /**
+             * 退出登录
+             * */
+            const logout = () => {
+                console.log("开始退出登录");
+                axios.get('/user/logout/' + user.value.token).then((response) => {
+                    const data = response.data;
+                    if (data.success) {
+                        message.success("退出登录成功！");
+                        // 将前端缓存及vuex里的user清空
+                        store.commit("setUser", {});
+                    } else {
+                        message.error(data.message);
+                    }
+                });
+            };
             return{
                 popSignIn,
                 popSignUp,
@@ -220,14 +261,21 @@
                 handleFinish,
                 handleFinishFailed,
                 handleValidate,
+                logout,
                 checked,
                 user,
+
+                DownOutlined,
             }
         }
     })
 </script>
 
 <style scoped>
+
+    #components-layout-demo-fixed{
+        width:100%;
+    }
 
     #components-layout-demo-fixed .logo {
         width: 120px;
