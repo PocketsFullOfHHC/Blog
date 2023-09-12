@@ -22,14 +22,18 @@
                 </a-layout-content>
             </a-layout>
         </div>
-    <a-button type="primary" shape="round" size="large" :style="{'float': 'right', 'margin': '15px'}" @click="saveBlog()">发帖</a-button>
+    <a-button type="primary" shape="round" size="large" :style="{'float': 'right', 'margin': '15px'}" @click="publishBlog()">发帖</a-button>
     </a-layout-content>
 </template>
 
 <script>
-    import '@wangeditor/editor/dist/css/style.css'
-    import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue'
-    import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+    import '@wangeditor/editor/dist/css/style.css';
+    import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue';
+    import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
+    import { message } from 'ant-design-vue';
+    import axios from 'axios'
+    import store from '@/store'
+    import { useRouter } from 'vue-router';
 
     export default {
         name: "AdminPublish",
@@ -48,13 +52,8 @@
             onMounted(() => {
                 setTimeout(() => {
                     valueHtml.value = '<p>这里是wangEditor编辑器</p>';
-                    const editor = editorRef.value;
-                    console.log(editorRef.value);
-                    console.log(editor);
-                }, 1500)
-
-                // const text = editor.getHtml();
-                // console.log(text)
+                    console.log(editorRef.value.getHtml());
+                }, 1500);
             });
 
             const toolbarConfig = {
@@ -77,6 +76,26 @@
                 editorRef.value = editor // 记录 editor 实例，重要！
             };
 
+            const { push } = useRouter();
+
+            const publishBlog = () => {
+                const blog = {
+                    authorId: store.state.user.id,
+                    content: editorRef.value.getHtml(),
+                };
+                axios.post("/blog/publish", blog).then((response) => {
+                    const data = response.data;
+                    if(data.success){
+                        message.success("发帖成功！");
+                        // 发博客成功后跳转到我的博客界面
+                        setTimeout(() => {
+                            push('/myself');
+                        }, 300);
+                    }else {
+                        message.error(data.message);
+                    }
+                })
+            };
 
             return {
                 editorRef,
@@ -84,7 +103,8 @@
                 mode: 'simple',
                 toolbarConfig,
                 editorConfig,
-                handleCreated
+                handleCreated,
+                publishBlog,
             };
         },
     }
