@@ -165,39 +165,9 @@
             };
 
             /**
-             * 注册
-             */
-            /* ref只能用于将基本类型数据转换成响应式数据，而reactive可以将任意对象转换成响应式数据 */
-            const signUpVisible = ref(false);
-            const signUpUser = reactive({
-                username: '',
-                name: '',
-                password: ''
-            });
-            const confirmPassword = ref('');
-
-            const popSignUp = () => {
-                signUpVisible.value = true;
-            };
-            const handleSignUpOk = () => {
-                signUpUser.password = formState.password;
-                // 前端密码第一次加密
-                signUpUser.password = hexMd5(signUpUser.password + KEY);
-                axios.post("/user/signup", signUpUser).then((response) => {
-                    if(response.data.success){
-                        message.success('注册成功');
-                        signUpVisible.value = false;
-                    } else {
-                        message.error(response.data.message);
-                    }
-
-                })
-            };
-
-            /**
              * 登录
              */
-            // 实时监听user的变化
+                // 实时监听user的变化
             const user = computed(() => store.state.user);
 
             const signInVisible = ref(false);
@@ -225,6 +195,42 @@
                     } else {
                         message.error(data.message);
                     }
+                })
+            };
+
+            /**
+             * 注册
+             */
+            /* ref只能用于将基本类型数据转换成响应式数据，而reactive可以将任意对象转换成响应式数据 */
+            const signUpVisible = ref(false);
+            const signUpUser = reactive({
+                username: '',
+                name: '',
+                password: ''
+            });
+            const confirmPassword = ref('');
+
+            const popSignUp = () => {
+                signUpVisible.value = true;
+            };
+            const handleSignUpOk = () => {
+                signUpUser.password = formState.password;
+                // 前端密码第一次加密
+                signUpUser.password = hexMd5(signUpUser.password + KEY);
+                axios.post("/user/signup", signUpUser).then((response) => {
+                    // 自动登录
+                    signInUser.username = response.data.content.username;
+                    signInUser.password = signUpUser.password;
+                    axios.post("/user/login", signInUser).then((response) => {
+                        const data = response.data;
+                        if(data.success){
+                            store.commit("setUser", data.content);
+                            message.success('注册成功');
+                            signUpVisible.value = false;
+                        } else {
+                            message.error(data.message);
+                        }
+                    })
                 })
             };
 
