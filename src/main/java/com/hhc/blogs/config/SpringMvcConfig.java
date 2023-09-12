@@ -1,7 +1,7 @@
 // 配置需要拦截器的接口请求
 package com.hhc.blogs.config;
 
-import com.hhc.blogs.interceptor.LogInterceptor;
+import com.hhc.blogs.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -12,12 +12,16 @@ import javax.annotation.Resource;
 public class SpringMvcConfig implements WebMvcConfigurer {
 
     @Resource
-    LogInterceptor logInterceptor;
+    LoginInterceptor loginInterceptor;
 
     public void addInterceptors(InterceptorRegistry registry) {
         // 配置无需拦截的页面路径，这是拦截器的优势，两个星号表示后面的值是任意的
-        registry.addInterceptor(logInterceptor)
+        registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/user/login");
+                .excludePathPatterns(
+                        "/user/**",
+                        "/test/**",
+                        "/redis/**"
+                );
     }
 }

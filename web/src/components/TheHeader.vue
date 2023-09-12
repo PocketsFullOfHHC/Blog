@@ -6,8 +6,8 @@
                 mode="horizontal"
                 :style="{ lineHeight: '64px' }"
         >
-            <a-menu-item key="1">nav 1</a-menu-item>
-            <a-menu-item key="2">nav 2</a-menu-item>
+            <a-menu-item key="1"><router-link to="/">首页</router-link></a-menu-item>
+            <a-menu-item key="2" :style="user.id ? {} : { display:'none' }"><router-link to="/myself">我的贴子</router-link></a-menu-item>
             <a-menu-item key="3">nav 3</a-menu-item>
             <a-menu-item key="4" v-if="!user.id" :style="{marginLeft:'auto'}" @click="popSignIn">登录</a-menu-item>
             <a-menu-item key="5" v-if="!user.id" @click="popSignUp">注册</a-menu-item>
@@ -167,7 +167,7 @@
             /**
              * 登录
              */
-                // 实时监听user的变化
+            // 实时监听user的变化
             const user = computed(() => store.state.user);
 
             const signInVisible = ref(false);
@@ -218,19 +218,23 @@
                 // 前端密码第一次加密
                 signUpUser.password = hexMd5(signUpUser.password + KEY);
                 axios.post("/user/signup", signUpUser).then((response) => {
-                    // 自动登录
-                    signInUser.username = response.data.content.username;
-                    signInUser.password = signUpUser.password;
-                    axios.post("/user/login", signInUser).then((response) => {
-                        const data = response.data;
-                        if(data.success){
-                            store.commit("setUser", data.content);
-                            message.success('注册成功');
-                            signUpVisible.value = false;
-                        } else {
-                            message.error(data.message);
-                        }
-                    })
+                    if(response.data.success){
+                        // 自动登录
+                        signInUser.username = response.data.content.username;
+                        signInUser.password = signUpUser.password;
+                        axios.post("/user/login", signInUser).then((res) => {
+                            console.log(res);
+                            if(response.data.success){
+                                store.commit("setUser", res.data.content);
+                                message.success('注册并自动登录成功');
+                                signUpVisible.value = false;
+                            } else {
+                                message.error(res.data.message);
+                            }
+                        })
+                    } else {
+                        message.error(response.data.message);
+                    }
                 })
             };
 

@@ -65,7 +65,7 @@ public class UserService {
             UserSignUpResp userSignUpResp = CopyUtil.copy(user, UserSignUpResp.class);
             return userSignUpResp;
         } else {
-            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+            throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
         }
     }
 
