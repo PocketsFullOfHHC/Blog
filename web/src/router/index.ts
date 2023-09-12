@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
-import AdminMyself from '../views/admin/AdminMyself.vue'
+import AdminMyself from '../views/admin/AdminMyself.vue';
+import AdminPublish from '../views/admin/AdminPublish.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -12,6 +13,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/myself',
     name: 'myself',
     component: AdminMyself
+  },
+  {
+    path: '/publish',
+    name: 'publish',
+    component: AdminPublish
   },
   {
     path: '/about',
