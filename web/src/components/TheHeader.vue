@@ -97,6 +97,7 @@
     import type { Rule } from 'ant-design-vue/es/form';
     import type { FormInstance } from 'ant-design-vue';
     import store from '@/store'
+    import {useRouter} from "vue-router";
     declare let hexMd5: any;
     declare let KEY: any;
 
@@ -241,6 +242,7 @@
             /**
              * 退出登录
              * */
+            const { push } = useRouter();
             const logout = () => {
                 console.log("开始退出登录");
                 axios.get('/user/logout/' + user.value.token).then((response) => {
@@ -249,6 +251,8 @@
                         message.success("退出登录成功！");
                         // 将前端缓存及vuex里的user清空
                         store.commit("setUser", {});
+                        // 跳转到首页
+                        push('/');
                     } else {
                         message.error(data.message);
                     }

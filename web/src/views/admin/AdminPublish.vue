@@ -46,12 +46,12 @@
             const editorRef = shallowRef();
 
             // 内容 HTML
-            const valueHtml = ref('<p>hello</p>');
+            const valueHtml = ref('');
 
             // 模拟 ajax 异步获取内容
             onMounted(() => {
                 setTimeout(() => {
-                    valueHtml.value = '<p>这里是wangEditor编辑器</p>';
+                    valueHtml.value = '<p>记录下你想说的话吧</p>';
                     console.log(editorRef.value.getHtml());
                 }, 1500);
             });
@@ -103,6 +103,7 @@
                 mode: 'simple',
                 toolbarConfig,
                 editorConfig,
+
                 handleCreated,
                 publishBlog,
             };
