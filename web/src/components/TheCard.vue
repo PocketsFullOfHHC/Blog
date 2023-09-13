@@ -28,7 +28,10 @@
                 </span>
             </span>
             <span key="comment-basic-reply-to">
-                Reply to
+                <CommentOutlined />
+                <span style="padding-left: 6px; cursor: auto">
+                  0
+                </span>
             </span>
         </template>
         <template #author><a>{{blogList.authorName}}</a></template>
@@ -37,7 +40,7 @@
         </template>
         <template #content>
             <a-image
-                    :width="200"
+                    :width="300"
                     src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
                     style="padding: 10px 0 10px 0"
             />
@@ -59,6 +62,7 @@
     import { LikeFilled, LikeOutlined, DislikeFilled, DislikeOutlined } from '@ant-design/icons-vue';
     import { defineComponent, ref, toRef } from 'vue';
     import relativeTime from 'dayjs/plugin/relativeTime';
+    import { CommentOutlined } from '@ant-design/icons-vue';
     dayjs.extend(relativeTime);
     export default defineComponent({
         name: "TheCard",
@@ -105,6 +109,7 @@
                 dislike,
                 dayjs,
                 html,
+                CommentOutlined,
             };
         },
     });
@@ -112,8 +117,8 @@
 
 <style scoped>
     #comment{
-        width:800px;
-        margin: 0 70px 0 70px;
+        width:900px;
+        margin: 0 50px 0 50px;
         float: left;
     }
 </style>

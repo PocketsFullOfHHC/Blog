@@ -1,5 +1,5 @@
 <template>
-    <a-layout-sider width="200" style="background: #fff">
+    <a-layout-sider width="250" style="background: #fff" padding="200px">
         <a-menu
                 mode="inline"
                 style="height: 100%"
