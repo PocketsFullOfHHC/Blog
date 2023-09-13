@@ -1,6 +1,7 @@
 package com.hhc.blogs.controller;
 
 import com.hhc.blogs.req.BlogPublishReq;
+import com.hhc.blogs.resp.BlogListResp;
 import com.hhc.blogs.resp.BlogResp;
 import com.hhc.blogs.resp.CommonResp;
 import com.hhc.blogs.service.BlogService;
@@ -24,9 +25,17 @@ public class BlogController {
     }
 
     @PostMapping("/publish")
-    public CommonResp blogPublish(@RequestBody BlogPublishReq blogPublishReq) {
+    public CommonResp<Object> blogPublish(@RequestBody BlogPublishReq blogPublishReq) {
         CommonResp<Object> commonResp = new CommonResp<>();
         blogService.publish(blogPublishReq);
         return commonResp;
+    }
+
+    @GetMapping("/myList/{userId}")
+    public CommonResp<List<BlogListResp>> myBlogNum(@PathVariable Long userId) {
+        CommonResp<List<BlogListResp>> resp = new CommonResp<>();
+        List<BlogListResp> blogListRespList = blogService.myList(userId);
+        resp.setContent(blogListRespList);
+        return resp;
     }
 }

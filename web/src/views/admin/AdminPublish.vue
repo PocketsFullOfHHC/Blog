@@ -31,8 +31,8 @@
     import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue';
     import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
     import { message } from 'ant-design-vue';
-    import axios from 'axios'
-    import store from '@/store'
+    import axios from 'axios';
+    import store from '@/store';
     import { useRouter } from 'vue-router';
 
     export default {

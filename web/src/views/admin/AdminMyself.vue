@@ -19,6 +19,7 @@
     import TheSider from '@/components/TheSider.vue';
     import {defineComponent, onMounted, ref} from 'vue';
     import axios from "axios";
+    import store from '@/store'
     import { message } from "ant-design-vue";
     export default defineComponent({
         name: "AdminMyself",
@@ -29,7 +30,7 @@
         setup(){
             let blogList = ref();
             const getAllBlog = () => {
-                axios.get("/blog/list").then(
+                axios.get("/blog/myList/" + store.state.user.id).then(
                     (response) =>{
                         blogList.value = response.data.content ? response.data.content :[];
                         console.log(response);

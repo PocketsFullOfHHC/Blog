@@ -31,9 +31,9 @@
                 Reply to
             </span>
         </template>
-        <template #author><a>{{blogList.authorId}}</a></template>
+        <template #author><a>{{blogList.authorName}}</a></template>
         <template #avatar>
-            <a-avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />
+            <a-avatar src="https://www.antdv.com/assets/logo.1ef800a8.svg" alt="Han Solo" />
         </template>
         <template #content>
             <a-image

@@ -13,7 +13,10 @@
             <a-menu-item key="5" v-if="!user.id" @click="popSignUp">注册</a-menu-item>
             <a-menu-item key="6" v-if="user.id" :style="{marginLeft:'auto'}">
                 <a-dropdown>
-                    <a class="ant-dropdown-link" @click.prevent>您好：{{user.name}}<DownOutlined/></a>
+                    <a class="ant-dropdown-link" @click.prevent>
+                        <a-avatar src="https://www.antdv.com/assets/logo.1ef800a8.svg" alt="Han Solo" :style="{ marginRight:'10px'}"/>
+                        {{user.name}}
+                    </a>
                     <template #overlay>
                         <a-menu>
                             <a-menu-item>
@@ -91,7 +94,6 @@
 
 <script lang="ts">
     import { defineComponent, ref, reactive, computed } from 'vue';
-    import { DownOutlined } from '@ant-design/icons-vue';
     import axios from "axios";
     import { message } from "ant-design-vue";
     import type { Rule } from 'ant-design-vue/es/form';
@@ -278,8 +280,6 @@
                 logout,
                 checked,
                 user,
-
-                DownOutlined,
             }
         }
     })

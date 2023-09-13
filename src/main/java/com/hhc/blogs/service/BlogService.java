@@ -2,7 +2,9 @@ package com.hhc.blogs.service;
 
 import com.hhc.blogs.domain.Blog;
 import com.hhc.blogs.mapper.BlogMapper;
+import com.hhc.blogs.mapper.BlogMapperCust;
 import com.hhc.blogs.req.BlogPublishReq;
+import com.hhc.blogs.resp.BlogListResp;
 import com.hhc.blogs.resp.BlogResp;
 import com.hhc.blogs.util.CopyUtil;
 import com.hhc.blogs.util.SnowFlake;
@@ -21,6 +23,9 @@ public class BlogService {
 
     @Resource
     private BlogMapper blogMapper;
+
+    @Resource
+    private BlogMapperCust blogMapperCust;
 
     @Resource
     private SnowFlake snowFlake;
@@ -47,4 +52,11 @@ public class BlogService {
         LOG.info("博客发布成功");
     }
 
+    /**
+     * 按发布时间查找我的博客
+     * */
+    public List<BlogListResp> myList(Long userId){
+        List<BlogListResp> blogList = blogMapperCust.getMyBlogList(userId);
+        return blogList;
+    }
 }
