@@ -90,7 +90,7 @@
                         // 发博客成功后跳转到我的博客界面
                         setTimeout(() => {
                             push('/myself');
-                        }, 300);
+                        }, 20);
                     }else {
                         message.error(data.message);
                     }

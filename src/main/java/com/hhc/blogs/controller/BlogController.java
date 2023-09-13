@@ -32,10 +32,20 @@ public class BlogController {
     }
 
     @GetMapping("/myList/{userId}")
-    public CommonResp<List<BlogListResp>> myBlogNum(@PathVariable Long userId) {
+    public CommonResp<List<BlogListResp>> blogMyList(@PathVariable Long userId) {
         CommonResp<List<BlogListResp>> resp = new CommonResp<>();
         List<BlogListResp> blogListRespList = blogService.myList(userId);
         resp.setContent(blogListRespList);
         return resp;
     }
+
+    @GetMapping("/AllList")
+    public CommonResp<List<BlogListResp>> blogAllList() {
+        CommonResp<List<BlogListResp>> resp = new CommonResp<>();
+        List<BlogListResp> blogListRespList = blogService.AllList();
+        resp.setContent(blogListRespList);
+        return resp;
+    }
+
+
 }

@@ -59,4 +59,13 @@ public class BlogService {
         List<BlogListResp> blogList = blogMapperCust.getMyBlogList(userId);
         return blogList;
     }
+
+    /**
+     * 按发布时间查找全部博客
+     * */
+    public List<BlogListResp> AllList(){
+        List<BlogListResp> blogList = blogMapperCust.getBlogList();
+        return blogList;
+    }
+
 }

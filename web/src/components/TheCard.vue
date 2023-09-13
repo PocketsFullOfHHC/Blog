@@ -37,7 +37,7 @@
         </template>
         <template #content>
             <a-image
-                    :width="350"
+                    :width="200"
                     src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
                     style="padding: 10px 0 10px 0"
             />
@@ -112,8 +112,8 @@
 
 <style scoped>
     #comment{
-        width:400px;
-        margin: 0 50px 0 10px;
+        width:800px;
+        margin: 0 70px 0 70px;
         float: left;
     }
 </style>

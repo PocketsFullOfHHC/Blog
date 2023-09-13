@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import AdminMyself from '../views/admin/AdminMyself.vue';
 import AdminPublish from '../views/admin/AdminPublish.vue';
+import AdminFind from '../views/admin/AdminFind.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -13,6 +14,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/myself',
     name: 'myself',
     component: AdminMyself
+  },
+  {
+    path: '/find',
+    name: 'find',
+    component: AdminFind
   },
   {
     path: '/publish',
@@ -27,11 +33,11 @@ const routes: Array<RouteRecordRaw> = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   }
-]
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
-})
+});
 
 export default router

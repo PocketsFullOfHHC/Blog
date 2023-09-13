@@ -1,17 +1,20 @@
 <template>
     <a-layout-header :style="{ position: 'fixed', zIndex: 1}" id="components-layout-demo-fixed">
         <div class="logo" />
+        <!-- selectedKeys取消高亮 -->
         <a-menu
                 theme="dark"
                 mode="horizontal"
                 :style="{ lineHeight: '64px' }"
+                :selectedKeys="false"
         >
-            <a-menu-item key="1"><router-link to="/">首页</router-link></a-menu-item>
-            <a-menu-item key="2" v-if="user.id"><router-link to="/myself">我的博客</router-link></a-menu-item>
-            <a-menu-item key="3" v-if="user.id"><router-link to="/publish">发布博客</router-link></a-menu-item>
-            <a-menu-item key="4" v-if="!user.id" :style="{marginLeft:'auto'}" @click="popSignIn">登录</a-menu-item>
-            <a-menu-item key="5" v-if="!user.id" @click="popSignUp">注册</a-menu-item>
-            <a-menu-item key="6" v-if="user.id" :style="{marginLeft:'auto'}">
+            <a-menu-item key="1"><router-link to="/" sele>首页</router-link></a-menu-item>
+            <a-menu-item key="2"><router-link to="/find">发现</router-link></a-menu-item>
+            <a-menu-item key="3" v-if="user.id"><router-link to="/myself">我的博客</router-link></a-menu-item>
+            <a-menu-item key="4" v-if="user.id"><router-link to="/publish">发布博客</router-link></a-menu-item>
+            <a-menu-item key="5" v-if="!user.id" :style="{marginLeft:'auto'}" @click="popSignIn">登录</a-menu-item>
+            <a-menu-item key="6" v-if="!user.id" @click="popSignUp">注册</a-menu-item>
+            <a-menu-item key="7" v-if="user.id" :style="{marginLeft:'auto'}">
                 <a-dropdown>
                     <a class="ant-dropdown-link" @click.prevent>
                         <a-avatar src="https://www.antdv.com/assets/logo.1ef800a8.svg" alt="Han Solo" :style="{ marginRight:'10px'}"/>
