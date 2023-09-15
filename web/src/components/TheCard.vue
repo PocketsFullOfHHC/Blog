@@ -39,11 +39,6 @@
             <a-avatar src="https://www.antdv.com/assets/logo.1ef800a8.svg" alt="Han Solo" />
         </template>
         <template #content>
-            <a-image
-                    :width="300"
-                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                    style="padding: 10px 0 10px 0"
-            />
             <div :innerHTML="html"></div>
         </template>
         <template #datetime>

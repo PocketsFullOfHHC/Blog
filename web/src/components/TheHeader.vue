@@ -6,7 +6,7 @@
                 theme="dark"
                 mode="horizontal"
                 :style="{ lineHeight: '64px' }"
-                :selectedKeys="false"
+                :selectedKeys="[false]"
         >
             <a-menu-item key="1"><router-link to="/" sele>首页</router-link></a-menu-item>
             <a-menu-item key="2"><router-link to="/find">发现</router-link></a-menu-item>
@@ -18,7 +18,7 @@
                 <a-dropdown>
                     <a class="ant-dropdown-link" @click.prevent>
                         <a-avatar src="https://www.antdv.com/assets/logo.1ef800a8.svg" alt="Han Solo" :style="{ marginRight:'10px'}"/>
-                        {{user.name}}
+                        {{user.name }}
                     </a>
                     <template #overlay>
                         <a-menu>
@@ -197,6 +197,7 @@
                         message.success("登录成功！");
                         signInVisible.value = false;
                         // 存入vuex中的state里
+                        console.log(data.content);
                         store.commit("setUser", data.content);
                     } else {
                         message.error(data.message);

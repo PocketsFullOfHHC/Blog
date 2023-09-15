@@ -63,7 +63,10 @@
                     'fullScreen',
                 ],
             };
-            const editorConfig = { placeholder: '请输入内容...' };
+
+            const editorConfig = {
+                placeholder: '请输入内容...',
+            };
 
             // 组件销毁时，也及时销毁编辑器
             onBeforeUnmount(() => {
@@ -78,6 +81,9 @@
 
             const { push } = useRouter();
 
+            /**
+             * 发博客
+             * */
             const publishBlog = () => {
                 const blog = {
                     authorId: store.state.user.id,
@@ -86,7 +92,7 @@
                 axios.post("/blog/publish", blog).then((response) => {
                     const data = response.data;
                     if(data.success){
-                        message.success("发帖成功！");
+                        message.success("发博客成功！");
                         // 发博客成功后跳转到我的博客界面
                         setTimeout(() => {
                             push('/myself');

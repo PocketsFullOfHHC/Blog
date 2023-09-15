@@ -5,6 +5,7 @@ import com.hhc.blogs.domain.UserExample;
 import com.hhc.blogs.exception.BusinessException;
 import com.hhc.blogs.exception.BusinessExceptionCode;
 import com.hhc.blogs.mapper.UserMapper;
+import com.hhc.blogs.mapper.UserMapperCust;
 import com.hhc.blogs.req.UserLoginReq;
 import com.hhc.blogs.req.UserReq;
 import com.hhc.blogs.req.UserSignUpReq;
@@ -32,6 +33,9 @@ public class UserService {
 
     @Resource
     private SnowFlake snowFlake;
+
+    @Resource
+    private UserMapperCust userMapperCust;
 
     /**
      * 测试查询所有的用户信息
@@ -108,6 +112,12 @@ public class UserService {
             // 返回第一条(唯一一条)
             return userList.get(0);
         }
+    }
 
+    /**
+     * 修改图片路径
+     * */
+    public void alterAvatarName(String avatarName, String userId){
+        userMapperCust.alterAvatarName(avatarName, Long.parseLong(userId));
     }
 }

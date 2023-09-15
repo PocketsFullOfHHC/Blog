@@ -12,12 +12,16 @@ import com.hhc.blogs.service.UserService;
 import com.hhc.blogs.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -84,6 +88,28 @@ public class UserController {
         CommonResp resp = new CommonResp<>();
         redisTemplate.delete(token);
         LOG.info("从redis中删除token: {}", token);
+        return resp;
+    }
+
+    /**
+     * 头像上传
+     * */
+    @RequestMapping("/upload/avatar")
+    public CommonResp uploadAvatar(@RequestHeader(value = "userId",required = false) String userId, @RequestParam MultipartFile avatar) throws IOException {
+        LOG.info("上传文件开始：{}", avatar);
+        LOG.info("文件名：{}", avatar.getOriginalFilename());
+        LOG.info("文件大小：{}", avatar.getSize());
+        CommonResp resp = new CommonResp();
+        // 图片重命名(带上用户id)
+        String originalFilename = avatar.getOriginalFilename();
+        String fileName = userId + "." +originalFilename.split("\\.")[1];
+        ApplicationHome applicationHome = new ApplicationHome(this.getClass());
+        String path = applicationHome.getDir().getParentFile().getParentFile().getAbsolutePath() + "\\src\\main\\resources\\statics\\avatars\\" + fileName;
+        LOG.info("文件存储地址：{}", path);
+        avatar.transferTo(new File(path));
+        //修改用户头像
+        userService.alterAvatarName(fileName, userId);
+        LOG.info("文件上传成功");
         return resp;
     }
 }

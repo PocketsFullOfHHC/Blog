@@ -5,6 +5,7 @@ public class UserLoginResp {
     String username;
     String name;
     String token;
+    String avatar;
 
     public Long getId() {
         return id;
@@ -38,6 +39,14 @@ public class UserLoginResp {
         this.token = token;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -48,6 +57,7 @@ public class UserLoginResp {
         sb.append(", username=").append(username);
         sb.append(", name=").append(name);
         sb.append(", token=").append(token);
+        sb.append(", avatar=").append(avatar);
         sb.append("]");
         return sb.toString();
     }

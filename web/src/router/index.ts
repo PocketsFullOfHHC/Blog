@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import AdminMyself from '../views/admin/AdminMyself.vue';
 import AdminPublish from '../views/admin/AdminPublish.vue';
 import AdminFind from '../views/admin/AdminFind.vue';
+import AdminUserInfo from '../views/admin/AdminUserInfo.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/publish',
     name: 'publish',
     component: AdminPublish
+  },
+  {
+    path: '/info',
+    name: 'info',
+    component: AdminUserInfo
   },
   {
     path: '/about',
