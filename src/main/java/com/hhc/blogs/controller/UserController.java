@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hhc.blogs.req.UserLoginReq;
 import com.hhc.blogs.req.UserReq;
 import com.hhc.blogs.req.UserSignUpReq;
-import com.hhc.blogs.resp.CommonResp;
-import com.hhc.blogs.resp.UserLoginResp;
-import com.hhc.blogs.resp.UserResp;
-import com.hhc.blogs.resp.UserSignUpResp;
+import com.hhc.blogs.resp.*;
 import com.hhc.blogs.service.UserService;
 import com.hhc.blogs.util.SnowFlake;
 import org.slf4j.Logger;
@@ -110,6 +107,17 @@ public class UserController {
         //修改用户头像
         userService.alterAvatarName(fileName, userId);
         LOG.info("文件上传成功");
+        return resp;
+    }
+
+    /**
+     * 获取用户信息
+     * */
+    @GetMapping("/info/{userId}")
+    public CommonResp<UserInfoResp> getInfo(@PathVariable Long userId){
+        CommonResp<UserInfoResp> resp = new CommonResp<UserInfoResp>();
+        UserInfoResp userInfoResp = userService.getUserInfo(userId);
+        resp.setContent(userInfoResp);
         return resp;
     }
 }

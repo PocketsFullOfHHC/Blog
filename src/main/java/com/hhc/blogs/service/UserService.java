@@ -2,13 +2,17 @@ package com.hhc.blogs.service;
 
 import com.hhc.blogs.domain.User;
 import com.hhc.blogs.domain.UserExample;
+import com.hhc.blogs.domain.UserInfo;
+import com.hhc.blogs.domain.UserInfoExample;
 import com.hhc.blogs.exception.BusinessException;
 import com.hhc.blogs.exception.BusinessExceptionCode;
+import com.hhc.blogs.mapper.UserInfoMapper;
 import com.hhc.blogs.mapper.UserMapper;
 import com.hhc.blogs.mapper.UserMapperCust;
 import com.hhc.blogs.req.UserLoginReq;
 import com.hhc.blogs.req.UserReq;
 import com.hhc.blogs.req.UserSignUpReq;
+import com.hhc.blogs.resp.UserInfoResp;
 import com.hhc.blogs.resp.UserLoginResp;
 import com.hhc.blogs.resp.UserResp;
 import com.hhc.blogs.resp.UserSignUpResp;
@@ -30,6 +34,9 @@ public class UserService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private UserInfoMapper userInfoMapper;
 
     @Resource
     private SnowFlake snowFlake;
@@ -119,5 +126,35 @@ public class UserService {
      * */
     public void alterAvatarName(String avatarName, String userId){
         userMapperCust.alterAvatarName(avatarName, Long.parseLong(userId));
+    }
+
+    /**
+     * 获取用户全部信息(包括基本信息)
+     * */
+    public UserInfoResp getUserInfo(Long userId){
+        UserInfoExample userInfoExample = new UserInfoExample();
+        UserInfoExample.Criteria criteria = userInfoExample.createCriteria();
+        criteria.andIdEqualTo(userId);
+        // 注意查询mediumtext、longtext用WithBogs
+        List<UserInfo> userInfoList = userInfoMapper.selectByExampleWithBLOBs(userInfoExample);
+        UserInfo userInfo = userInfoList.get(0);
+        UserInfoResp userInfoResp;
+        if(ObjectUtils.isEmpty(userInfo)){
+            userInfoResp = new UserInfoResp();
+        } else {
+            userInfoResp = CopyUtil.copy(userInfo, UserInfoResp.class);
+            LOG.info("正在查询{}", userInfo.getTags());
+        }
+        // 获取基本信息
+        UserExample userExample = new UserExample();
+        UserExample.Criteria userCriteria = userExample.createCriteria();
+        userCriteria.andIdEqualTo(userId);
+        List<User> userList = userMapper.selectByExample(userExample);
+        User user = userList.get(0);
+        userInfoResp.setId(user.getId());
+        userInfoResp.setUsername(user.getUsername());
+        userInfoResp.setName(user.getName());
+        userInfoResp.setAvatar(user.getAvatar());
+        return userInfoResp;
     }
 }
