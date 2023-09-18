@@ -95,6 +95,7 @@
             const loading = ref(false);
             const imageUrl = ref('');
 
+            // 获取图片base64编码
             function getBase64(img, callback) {
                 const reader = new FileReader();
                 reader.addEventListener('load', () => callback(reader.result));
@@ -143,6 +144,7 @@
 
             const alterAvatar = () => {
                 visible.value = false;
+                message.success("头像修改成功！");
             };
 
             const confirm = () => {
@@ -155,6 +157,8 @@
 
 
             return{
+                user,
+
                 fileList,
                 loading,
                 imageUrl,

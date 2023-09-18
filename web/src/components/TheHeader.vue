@@ -17,13 +17,13 @@
             <a-menu-item key="7" v-if="user.id" :style="{marginLeft:'auto'}">
                 <a-dropdown>
                     <a class="ant-dropdown-link" @click.prevent>
-                        <a-avatar src="https://www.antdv.com/assets/logo.1ef800a8.svg" alt="Han Solo" :style="{ marginRight:'10px'}"/>
+                        <a-avatar :src="'http://localhost:8080/picture/avatars/' + avatarName" alt="Han Solo" :style="{ marginRight:'10px'}"/>
                         {{user.name }}
                     </a>
                     <template #overlay>
                         <a-menu>
                             <a-menu-item>
-                                <router-link to="">
+                                <router-link to="/info">
                                     <a-button type="text">修改信息</a-button>
                                 </router-link>
                             </a-menu-item>
@@ -109,6 +109,13 @@
     export default defineComponent ({
         name: "TheHeader",
         setup(){
+
+            /**
+             * 显示头像
+             * */
+            const avatarName = ref();
+            avatarName.value = store.state.user.avatar;
+
             /**
              * 密码校验
              */
@@ -284,6 +291,7 @@
                 logout,
                 checked,
                 user,
+                avatarName,
             }
         }
     })

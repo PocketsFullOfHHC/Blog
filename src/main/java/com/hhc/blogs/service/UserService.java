@@ -63,7 +63,7 @@ public class UserService {
         if(ObjectUtils.isEmpty(userDB)){
             LOG.info("数据库中不存在同名");
             user.setId(snowFlake.nextId());
-            user.setAvatar("./default.png");
+            user.setAvatar("default.jpg");
             userMapper.insert(user);
             LOG.info("注册成功");
             UserSignUpResp userSignUpResp = CopyUtil.copy(user, UserSignUpResp.class);

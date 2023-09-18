@@ -36,7 +36,7 @@
         </template>
         <template #author><a>{{blogList.authorName}}</a></template>
         <template #avatar>
-            <a-avatar src="https://www.antdv.com/assets/logo.1ef800a8.svg" alt="Han Solo" />
+            <a-avatar :src="'http://localhost:8080/picture/avatars/' + avatarName" alt="Han Solo" />
         </template>
         <template #content>
             <div :innerHTML="html"></div>
@@ -58,6 +58,7 @@
     import { defineComponent, ref, toRef } from 'vue';
     import relativeTime from 'dayjs/plugin/relativeTime';
     import { CommentOutlined } from '@ant-design/icons-vue';
+    import store from "@/store";
     dayjs.extend(relativeTime);
     export default defineComponent({
         name: "TheCard",
@@ -70,6 +71,12 @@
         props: ['blogList'],
         // setup中使用props
         setup(props) {
+
+            /**
+             * 显示头像
+             * */
+            const avatarName = ref();
+            avatarName.value = props.blogList.avatar;
 
             /**
              * 展示博客内容
@@ -105,6 +112,7 @@
                 dayjs,
                 html,
                 CommentOutlined,
+                avatarName,
             };
         },
     });
