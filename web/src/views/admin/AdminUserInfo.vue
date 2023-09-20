@@ -155,9 +155,19 @@
 
             const updateInfo = () => {
                 isEdit.value = isEdit.value ? false : true;
+                user.value.tags = state.tags.join();
+                axios.post("/user/updateInfo/", user.value).then((response) => {
+                    if (response.data.success){
+                        message.success("修改信息成功！");
+                        getUserInfo();
+                    }else {
+                        message.error(response.data.error);
+                    }
+                })
             };
 
             const cancelEdit = () => {
+                getUserInfo();
                 isEdit.value = isEdit.value ? false : true;
             };
 

@@ -166,6 +166,8 @@ public class UserService {
         UserInfoResp userInfoReqDB = getUserInfo(userInfoReq.getId());
         UserInfo userInfoDB = CopyUtil.copy(userInfoReqDB, UserInfo.class);
         UserInfo userInfo = CopyUtil.copy(userInfoReq, UserInfo.class);
+        // 暂时设置登录状态一直为在线
+        userInfo.setStatus(true);
         LOG.info("用户信息：{}",userInfoDB);
         if(userInfoDB.getSelfIntro() == null && userInfoDB.getAge() == null && userInfoDB.getGender() == null
                 && userInfoDB.getStatus() == null && userInfoDB.getCircles() ==null
