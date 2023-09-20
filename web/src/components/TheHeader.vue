@@ -51,7 +51,7 @@
                 <a-input v-model:value="signInUser.username" placeholder="请输入用户名"/>
             </a-form-item>
             <a-form-item label="密码">
-                <a-input v-model:value="signInUser.password" type="password" placeholder="请输入密码"/>
+                <a-input-password v-model:value="signInUser.password" type="password" placeholder="请输入密码"/>
             </a-form-item>
         </a-form>
     </a-modal>
@@ -85,10 +85,10 @@
                 <a-input v-model:value="signUpUser.name" placeholder="请输入昵称"/>
             </a-form-item>
             <a-form-item has-feedback label="密码" name="password">
-                <a-input v-model:value="formState.password" placeholder="请输入密码" type="password" autocomplete="off"/>
+                <a-input-password v-model:value="formState.password" placeholder="请输入密码" type="password" autocomplete="off"/>
             </a-form-item>
             <a-form-item has-feedback label="确认密码" name="checkPass">
-                <a-input v-model:value="formState.checkPass" placeholder="请再次输入密码" type="password" autocomplete="off"/>
+                <a-input-password v-model:value="formState.checkPass" placeholder="请再次输入密码" type="password" autocomplete="off"/>
             </a-form-item>
         </a-form>
     </a-modal>
