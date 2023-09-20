@@ -6,7 +6,7 @@
         <a-layout style="padding: 24px 0; background: #fff">
             <the-sider></the-sider>
             <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
-                <div v-for="item in blogList" :key="item" >
+                <div v-for="item in blogList" :key="item.id" >
                     <TheCard :blogList="item"></TheCard>
                 </div>
                 <a-pagination
