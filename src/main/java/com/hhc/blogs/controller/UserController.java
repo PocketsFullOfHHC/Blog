@@ -1,6 +1,7 @@
 package com.hhc.blogs.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hhc.blogs.req.UserInfoReq;
 import com.hhc.blogs.req.UserLoginReq;
 import com.hhc.blogs.req.UserReq;
 import com.hhc.blogs.req.UserSignUpReq;
@@ -118,6 +119,16 @@ public class UserController {
         CommonResp<UserInfoResp> resp = new CommonResp<UserInfoResp>();
         UserInfoResp userInfoResp = userService.getUserInfo(userId);
         resp.setContent(userInfoResp);
+        return resp;
+    }
+
+    /**
+     * 更改用户信息
+     * */
+    @PostMapping("/updateInfo")
+    public CommonResp updateInfo(@RequestBody UserInfoReq userInfoReq){
+        CommonResp resp = new CommonResp<>();
+        userService.updateUserInfo(userInfoReq);
         return resp;
     }
 }

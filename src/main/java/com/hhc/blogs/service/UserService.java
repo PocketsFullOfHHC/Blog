@@ -9,6 +9,7 @@ import com.hhc.blogs.exception.BusinessExceptionCode;
 import com.hhc.blogs.mapper.UserInfoMapper;
 import com.hhc.blogs.mapper.UserMapper;
 import com.hhc.blogs.mapper.UserMapperCust;
+import com.hhc.blogs.req.UserInfoReq;
 import com.hhc.blogs.req.UserLoginReq;
 import com.hhc.blogs.req.UserReq;
 import com.hhc.blogs.req.UserSignUpReq;
@@ -137,13 +138,13 @@ public class UserService {
         criteria.andIdEqualTo(userId);
         // 注意查询mediumtext、longtext用WithBogs
         List<UserInfo> userInfoList = userInfoMapper.selectByExampleWithBLOBs(userInfoExample);
-        UserInfo userInfo = userInfoList.get(0);
         UserInfoResp userInfoResp;
-        if(ObjectUtils.isEmpty(userInfo)){
+        if(CollectionUtils.isEmpty(userInfoList)){
+            LOG.info("该用户未填写信息！");
             userInfoResp = new UserInfoResp();
         } else {
-            userInfoResp = CopyUtil.copy(userInfo, UserInfoResp.class);
-            LOG.info("正在查询{}", userInfo.getTags());
+            userInfoResp = CopyUtil.copy(userInfoList.get(0), UserInfoResp.class);
+            LOG.info("正在查询：{}", userInfoList.get(0).getTags());
         }
         // 获取基本信息
         UserExample userExample = new UserExample();
@@ -156,5 +157,26 @@ public class UserService {
         userInfoResp.setName(user.getName());
         userInfoResp.setAvatar(user.getAvatar());
         return userInfoResp;
+    }
+
+    /**
+     * 更改用户信息(包括基本信息)
+     * */
+    public void updateUserInfo(UserInfoReq userInfoReq) {
+        UserInfoResp userInfoReqDB = getUserInfo(userInfoReq.getId());
+        UserInfo userInfoDB = CopyUtil.copy(userInfoReqDB, UserInfo.class);
+        UserInfo userInfo = CopyUtil.copy(userInfoReq, UserInfo.class);
+        LOG.info("用户信息：{}",userInfoDB);
+        if(userInfoDB.getSelfIntro() == null && userInfoDB.getAge() == null && userInfoDB.getGender() == null
+                && userInfoDB.getStatus() == null && userInfoDB.getCircles() ==null
+                && userInfoDB.getManagedCircles() == null && userInfoDB.getTags() == null){
+            LOG.info("数据库中不存在该用户信息，开始插入:{}", userInfo);
+            userMapperCust.updateName(userInfo.getId(), userInfoReq.getName());
+            userInfoMapper.insert(userInfo);
+        } else {
+            LOG.info("数据库中存在该用户信息，开始修改：{}", userInfo);
+            userMapperCust.updateName(userInfo.getId(), userInfoReq.getName());
+            userInfoMapper.updateByPrimaryKeyWithBLOBs(userInfo);
+        }
     }
 }

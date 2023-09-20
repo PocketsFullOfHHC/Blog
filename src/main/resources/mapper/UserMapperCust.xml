@@ -7,4 +7,9 @@
        update `user` set avatar = #{avatarName} where id = #{userId}
     </update>
 
+    <!-- 修改用户基本信息 -->
+    <update id="updateName">
+       update `user` set name = #{name} where id = #{id}
+    </update>
+
 </mapper>
