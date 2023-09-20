@@ -6,9 +6,15 @@
         <a-layout style="padding: 24px 0; background: #fff">
             <the-sider></the-sider>
             <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
-                        <div v-for="(item,index) in blogList" :key="index" >
-                                <TheCard :blogList="item"></TheCard>
-                        </div>
+                <div v-for="item in blogList" :key="item" >
+                    <TheCard :blogList="item"></TheCard>
+                </div>
+                <a-pagination
+                        v-model:current="current"
+                        :total="blogNum ? blogNum : 1"
+                        :defaultPageSize="5"
+                        :style="{marginLeft:'auto', textAlign: 'right'}"
+                        @change="getAllBlog(current)"/>
             </a-layout-content>
         </a-layout>
     </a-layout-content>
@@ -28,12 +34,17 @@
             TheSider,
         },
         setup(){
+            /**
+             * 分页展示我的博客
+             * */
+            const pagination = ref();
+            const current = ref(1);
             let blogList = ref();
-            const getAllBlog = () => {
-                axios.get("/blog/myList/" + store.state.user.id).then(
+            const getAllBlog = (pageNum:number) => {
+                axios.get("/blog/myList/" + store.state.user.id + "/" + pageNum + "/5").then(
                     (response) =>{
                         blogList.value = response.data.content ? response.data.content :[];
-                        console.log(response);
+                        console.log(pageNum);
                         console.log(blogList.value);
                     },
                     (error) => {
@@ -41,11 +52,28 @@
                     }
                 )
             };
+
+            const blogNum = ref();
+            const getBlogNum = () => {
+                axios.get("/blog/myBlogNum/" + store.state.user.id).then(
+                    (response) => {
+                        blogNum.value = response.data.content;
+                        console.log(blogNum.value);
+                    }
+                )
+            };
+
             onMounted(()=>{
-                getAllBlog();
+                getAllBlog(1);
+                getBlogNum();
+
             });
             return{
+                pagination,
                 blogList,
+                current,
+                getAllBlog,
+                blogNum,
             }
         },
     });
