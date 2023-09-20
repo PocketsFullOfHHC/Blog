@@ -12,3 +12,9 @@ Content-Type: application/json
 }
 
 ###
+GET http://localhost:8080/blog/myList/355950515865128960/2/5
+
+###
+GET http://localhost:8080/blog/myBlogNum/355950515865128960
+
+###

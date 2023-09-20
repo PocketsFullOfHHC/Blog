@@ -1,5 +1,7 @@
 package com.hhc.blogs.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hhc.blogs.domain.Blog;
 import com.hhc.blogs.mapper.BlogMapper;
 import com.hhc.blogs.mapper.BlogMapperCust;
@@ -53,11 +55,23 @@ public class BlogService {
     }
 
     /**
-     * 按发布时间查找我的博客
+     * 按发布时间分页查找我的博客
      * */
-    public List<BlogListResp> myList(Long userId){
+    public List<BlogListResp> myList(Long userId, int pageNum, int pageSize){
+        PageHelper.startPage(pageNum, pageSize);
         List<BlogListResp> blogList = blogMapperCust.getMyBlogList(userId);
+        PageInfo<BlogListResp> pageInfo = new PageInfo<>(blogList);
+        LOG.info("总行数：{}", pageInfo.getTotal());
+        LOG.info("总页数：{}", pageInfo.getPages());
         return blogList;
+    }
+
+    /**
+     * 获取我的博客分页数据总条数
+     * */
+    public Integer blogNum(Long userId){
+        List<BlogListResp> blogList = blogMapperCust.getMyBlogList(userId);
+        return blogList.size();
     }
 
     /**
