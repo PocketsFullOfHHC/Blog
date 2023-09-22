@@ -50,6 +50,8 @@ public class BlogService {
         blog.setId(snowFlake.nextId());
         blog.setPublishTime(new Date());
         blog.setVoteNum(0);
+        blog.setOpposeNum(0);
+        blog.setCommentNum(0);
         blogMapper.insert(blog);
         LOG.info("博客发布成功");
     }
@@ -80,6 +82,13 @@ public class BlogService {
     public List<BlogListResp> AllList(){
         List<BlogListResp> blogList = blogMapperCust.getBlogList();
         return blogList;
+    }
+
+    /**
+     * 更新评论数
+     * */
+    public void increaseComment(Long blogId){
+        blogMapperCust.increaseComment(blogId);
     }
 
 }

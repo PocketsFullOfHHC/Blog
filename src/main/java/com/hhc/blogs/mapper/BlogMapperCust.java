@@ -10,4 +10,6 @@ public interface BlogMapperCust {
 
     public List<BlogListResp> getMyBlogList(@Param("id") Long id);
 
+    public void increaseComment(Long id);
+
 }

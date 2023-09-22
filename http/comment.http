@@ -1,0 +1,18 @@
+POST http://localhost:8080/comment/save
+Content-Type: application/json
+
+{
+  "content": "这是我的第一条评论！",
+  "commentatorId": 355950515865128960,
+  "blogId": 357008312497213440
+}
+
+###
+
+GET http://localhost:8080/comment/list/357008312497213440
+
+###
+
+GET http://localhost:8080/comment/commentNum/357008312497213440
+
+###

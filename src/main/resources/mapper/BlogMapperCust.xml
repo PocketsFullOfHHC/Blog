@@ -14,4 +14,9 @@
         from `blog` t1, `user` t2 where t1.author_id = t2.id and t1.author_id = #{id} order by t1.publish_time desc
     </select>
 
+    <!-- 发布评论数后更新评论总数 -->
+    <update id="increaseComment">
+        update blog set comment_num = comment_num + 1 where id = #{id};
+    </update>
+
 </mapper>
