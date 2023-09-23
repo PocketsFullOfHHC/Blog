@@ -1,0 +1,32 @@
+POST http://localhost:8080/likes/save
+Content-Type: application/json
+
+{
+  "commentatorId": 355950515865128960,
+  "blogId": 357008312497213440,
+  "isLike": true
+}
+###
+
+POST http://localhost:8080/likes/save
+Content-Type: application/json
+
+{
+  "commentatorId": 355950515865128960,
+  "blogId": 357075005969928192,
+  "isLike": true
+}
+
+###
+
+GET http://localhost:8080/likes/list/355950515865128960
+
+###
+
+GET http://localhost:8080/likes/listByBlog/357075005969928192
+
+###
+
+GET http://localhost:8080/likes/likesNum/355950515865128960
+
+###

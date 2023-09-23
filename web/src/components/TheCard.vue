@@ -169,7 +169,7 @@
                             })
                         }
                     }else {
-                        message.error(data.error)
+                        message.error(data.message);
                     }
                 })
             };
@@ -178,6 +178,7 @@
             const handleSubmitComment = () => {
                 // 判空
                 if (!content.value) {
+                    message.warn("请勿提交空内容");
                     return;
                 }
                 submitting.value = true;
