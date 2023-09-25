@@ -20,6 +20,7 @@
     import {defineComponent, onMounted, ref} from 'vue';
     import axios from "axios";
     import { message } from "ant-design-vue";
+    import store from "@/store";
     export default defineComponent({
         name: "AdminFind",
         components: {
@@ -40,8 +41,22 @@
                     }
                 )
             };
+
+            /**
+             * 将个人的点赞历史保存到vuex中，后续个人主要需要用
+             * */
+            const getMyLikes = () => {
+                if (store.state.user.id){
+                    axios.get("/likes/list/" + store.state.user.id).then((response) => {
+                        const data = response.data;
+                        store.commit("setLikes", data.content);
+                    })
+                }
+            };
+
             onMounted(()=>{
                 getAllBlog();
+                getMyLikes();
             });
             return{
                 blogList,

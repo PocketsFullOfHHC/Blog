@@ -11,7 +11,7 @@
                     </template>
                 </a-tooltip>
                 <span style="padding-left: 8px; cursor: auto">
-                    {{ likes }}
+                    {{ blogList.voteNum }}
                 </span>
             </span>
             <span key="comment-basic-dislike">
@@ -24,7 +24,7 @@
                     </template>
                 </a-tooltip>
                 <span style="padding-left: 8px; cursor: auto">
-                    {{ dislikes }}
+                    {{ blogList.opposeNum }}
                 </span>
             </span>
             <span key="comment-basic-reply-to" @click="alterCommentShow">
@@ -34,6 +34,17 @@
                 </span>
             </span>
         </template>
+        <!-- 点赞展示 -->
+        <LikeTwoTone />
+        <a-list
+                v-if="likesName.length"
+                :data-source="likesName"
+                item-layout="horizontal"
+        >
+            <template #renderItem="{ item }">
+                <a>{{item.likeName}}</a>
+            </template>
+        </a-list>
         <template #author><a>{{blogList.authorName}}</a></template>
         <template #avatar>
             <a-avatar :src="'http://localhost:8080/picture/avatars/' + blogList.avatar" alt="Han Solo" />
@@ -90,8 +101,8 @@
     /* eslint-disable */
     // eslint-disable-next-line vue/no-setup-props-destructure
     import dayjs from 'dayjs';
-    import { LikeFilled, LikeOutlined, DislikeFilled, DislikeOutlined } from '@ant-design/icons-vue';
-    import { defineComponent, ref } from 'vue';
+    import { LikeFilled, LikeOutlined, DislikeFilled, DislikeOutlined, LikeTwoTone } from '@ant-design/icons-vue';
+    import { defineComponent, ref, onMounted } from 'vue';
     import relativeTime from 'dayjs/plugin/relativeTime';
     import { CommentOutlined } from '@ant-design/icons-vue';
     import axios from "axios";
@@ -105,6 +116,7 @@
             LikeOutlined,
             DislikeFilled,
             DislikeOutlined,
+            LikeTwoTone,
         },
         props: ['blogList'],
         // setup中使用props
@@ -202,30 +214,95 @@
             /**
              * 点赞点踩
              * */
-            const likes = ref<number>(0);
-            const dislikes = ref<number>(0);
-            const action = ref<string>();
+            // 点赞点踩请求参数
+            const likeReq = {
+                commentatorId: store.state.user.id,
+                blogId: props.blogList.id,
+                isLike: true
+            };
+
+            // 点赞点踩状态
+            const action = ref<string>('none');
 
             const like = () => {
-                likes.value = 1;
-                dislikes.value = 0;
-                action.value = 'liked';
+                likeReq.isLike = true;
+                axios.post("/likes/save", likeReq).then((response) => {
+                    const data = response.data;
+                    if(data.success){
+                        message.success("点赞成功");
+                        action.value = 'liked';
+                        props.blogList.voteNum ++;
+                    } else {
+                        message.error(data.message);
+                    }
+                });
             };
 
             const dislike = () => {
-                likes.value = 0;
-                dislikes.value = 1;
-                action.value = 'disliked';
+                likeReq.isLike = false;
+                axios.post("/likes/save", likeReq).then((response) => {
+                    const data = response.data;
+                    if(data.success){
+                        message.success("点踩成功");
+                        action.value = 'disliked';
+                        props.blogList.opposeNum ++;
+                    } else {
+                        message.error(data.message);
+                    }
+                });
             };
 
+            // 登录者是否点赞
+            const isMyLike = () => {
+                for (let item of store.state.likes){
+                    if (item.blogId === props.blogList.id && item.isLike){
+                        action.value = 'liked';
+                        break;
+                    }else if (item.blogId === props.blogList.id && !item.isLike){
+                        action.value = 'disliked';
+                        break;
+                    }else {
+                        action.value = 'none';
+                    }
+                }
+            };
+
+            // 显示该博客有谁点过赞
+            const likesName = ref([{
+
+            }]);
+            const blogsLike = () => {
+                axios.get("/likes/listByBlog/" + props.blogList.id).then((response) => {
+                    const data = response.data;
+                    if (data.success){
+                        if(data.content.length !== 0){
+                            for(let item of data.content){
+                                likesName.value.push({
+                                    likeName:item.name,
+                                })
+                            }
+                            console.log("点赞名单：",likesName.value);
+                        }
+                    }else {
+                        message.error(data.message);
+                    }
+
+                })
+            };
+
+            onMounted(() => {
+                isMyLike();
+                blogsLike();
+            });
+
             return {
-                likes,
-                dislikes,
                 action,
                 like,
                 dislike,
-                dayjs,
+                likesName,
+                blogsLike,
 
+                dayjs,
                 html,
                 CommentOutlined,
                 avatarName,

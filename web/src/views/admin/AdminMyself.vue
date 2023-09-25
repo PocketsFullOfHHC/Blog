@@ -63,9 +63,22 @@
                 )
             };
 
+            /**
+             * 将个人的点赞历史保存到vuex中，后续个人主要需要用
+             * */
+            const getMyLikes = () => {
+                if (store.state.user.id){
+                    axios.get("/likes/list/" + store.state.user.id).then((response) => {
+                        const data = response.data;
+                        store.commit("setLikes", data.content);
+                    })
+                }
+            };
+
             onMounted(()=>{
                 getAllBlog(1);
                 getBlogNum();
+                getMyLikes();
 
             });
             return{

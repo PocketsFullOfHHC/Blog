@@ -96,7 +96,7 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent, ref, reactive, computed } from 'vue';
+    import {defineComponent, ref, reactive, computed} from 'vue';
     import axios from "axios";
     import { message } from "ant-design-vue";
     import type { Rule } from 'ant-design-vue/es/form';
@@ -201,11 +201,11 @@
                 axios.post("/user/login", signInUser).then((response) => {
                     const data = response.data;
                     if (data.success) {
-                        message.success("登录成功！");
                         signInVisible.value = false;
                         // 存入vuex中的state里
                         console.log(data.content);
                         store.commit("setUser", data.content);
+                        message.success("登录成功！");
                     } else {
                         message.error(data.message);
                     }
@@ -271,6 +271,7 @@
                     }
                 });
             };
+
             return{
                 popSignIn,
                 popSignUp,
