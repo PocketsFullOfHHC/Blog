@@ -2,7 +2,7 @@
     <a-comment id="comment">
         <template #actions>
             <span key="comment-basic-like">
-                <a-tooltip title="Like">
+                <a-tooltip title="点赞">
                     <template v-if="action === 'liked'">
                         <LikeFilled @click="like" />
                     </template>
@@ -15,7 +15,7 @@
                 </span>
             </span>
             <span key="comment-basic-dislike">
-                <a-tooltip title="Dislike">
+                <a-tooltip title="点踩">
                     <template v-if="action === 'disliked'">
                         <DislikeFilled @click="dislike" />
                     </template>
@@ -35,14 +35,15 @@
             </span>
         </template>
         <!-- 点赞展示 -->
-        <LikeTwoTone />
         <a-list
-                v-if="likesName.length"
+                v-if="likesName.length > 1"
                 :data-source="likesName"
                 item-layout="horizontal"
         >
-            <template #renderItem="{ item }">
-                <a>{{item.likeName}}</a>
+            <template #renderItem="{ index, item }">
+                <a v-if="item.likeName !== undefined && index === likesName.length - 1">{{item.likeName}}。</a>
+                <a v-else-if="item.likeName !== undefined && index !== likesName.length - 1">{{item.likeName}}，</a>
+                <a v-else><LikeTwoTone/>{{item.likeName}}点赞者：</a>
             </template>
         </a-list>
         <template #author><a>{{blogList.authorName}}</a></template>
