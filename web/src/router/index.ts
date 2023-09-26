@@ -4,6 +4,7 @@ import AdminMyself from '../views/admin/AdminMyself.vue';
 import AdminPublish from '../views/admin/AdminPublish.vue';
 import AdminFind from '../views/admin/AdminFind.vue';
 import AdminUserInfo from '../views/admin/AdminUserInfo.vue'
+import AdminUserHomePage from '../views/admin/AdminUserHomePage.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,6 +31,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/info',
     name: 'info',
     component: AdminUserInfo
+  },
+  {
+    path: '/userHomePage',
+    name: 'userHomePage',
+    component: AdminUserHomePage
   },
   {
     path: '/about',
