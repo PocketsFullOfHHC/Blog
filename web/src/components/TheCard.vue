@@ -48,7 +48,7 @@
         </a-list>
         <template #author><a>{{blogList.authorName}}</a></template>
         <template #avatar>
-            <a-avatar :src="'http://localhost:8080/picture/avatars/' + blogList.avatar" alt="Han Solo" />
+            <a-avatar @click="toUserInfo()" :src="'http://localhost:8080/picture/avatars/' + blogList.avatar" alt="Han Solo" />
         </template>
         <template #content>
             <div :innerHTML="html"></div>
@@ -109,6 +109,7 @@
     import axios from "axios";
     import store from '@/store';
     import {message} from "ant-design-vue";
+    import {useRouter}  from "vue-router";
     dayjs.extend(relativeTime);
     export default defineComponent({
         name: "TheCard",
@@ -291,6 +292,19 @@
                 })
             };
 
+            /**
+             * 点击头像进入主页
+             */
+            const router = useRouter();
+            const toUserInfo = () => {
+                router.push ({
+                    path:"/userHomePage",
+                    query:{
+                        authorId: props.blogList.authorId
+                    }
+                })
+            };
+
             onMounted(() => {
                 isMyLike();
                 blogsLike();
@@ -314,6 +328,8 @@
                 alterCommentShow,
                 commentShow,
                 content,
+
+                toUserInfo,
             };
         },
     });

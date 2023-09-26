@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhc.blogs.mapper.FollowMapper">
+  <resultMap id="BaseResultMap" type="com.hhc.blogs.domain.Follow">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="like_id" jdbcType="BIGINT" property="likeId" />
+    <result column="beliked_id" jdbcType="BIGINT" property="belikedId" />
+    <result column="follow _time" jdbcType="TIMESTAMP" property="followTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, like_id, beliked_id, `follow _time`
+  </sql>
+  <select id="selectByExample" parameterType="com.hhc.blogs.domain.FollowExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from follow
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from follow
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from follow
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hhc.blogs.domain.FollowExample">
+    delete from follow
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hhc.blogs.domain.Follow">
+    insert into follow (id, like_id, beliked_id, 
+      `follow _time`)
+    values (#{id,jdbcType=BIGINT}, #{likeId,jdbcType=BIGINT}, #{belikedId,jdbcType=BIGINT}, 
+      #{followTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hhc.blogs.domain.Follow">
+    insert into follow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="likeId != null">
+        like_id,
+      </if>
+      <if test="belikedId != null">
+        beliked_id,
+      </if>
+      <if test="followTime != null">
+        `follow _time`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="likeId != null">
+        #{likeId,jdbcType=BIGINT},
+      </if>
+      <if test="belikedId != null">
+        #{belikedId,jdbcType=BIGINT},
+      </if>
+      <if test="followTime != null">
+        #{followTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hhc.blogs.domain.FollowExample" resultType="java.lang.Long">
+    select count(*) from follow
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update follow
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.likeId != null">
+        like_id = #{record.likeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.belikedId != null">
+        beliked_id = #{record.belikedId,jdbcType=BIGINT},
+      </if>
+      <if test="record.followTime != null">
+        `follow _time` = #{record.followTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update follow
+    set id = #{record.id,jdbcType=BIGINT},
+      like_id = #{record.likeId,jdbcType=BIGINT},
+      beliked_id = #{record.belikedId,jdbcType=BIGINT},
+      `follow _time` = #{record.followTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hhc.blogs.domain.Follow">
+    update follow
+    <set>
+      <if test="likeId != null">
+        like_id = #{likeId,jdbcType=BIGINT},
+      </if>
+      <if test="belikedId != null">
+        beliked_id = #{belikedId,jdbcType=BIGINT},
+      </if>
+      <if test="followTime != null">
+        `follow _time` = #{followTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hhc.blogs.domain.Follow">
+    update follow
+    set like_id = #{likeId,jdbcType=BIGINT},
+      beliked_id = #{belikedId,jdbcType=BIGINT},
+      `follow _time` = #{followTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

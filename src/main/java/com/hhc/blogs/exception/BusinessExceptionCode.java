@@ -5,6 +5,7 @@ public enum BusinessExceptionCode {
     USER_LOGIN_NAME_EXIST("用户名已存在"),
     LOGIN_USER_ERROR("用户不存在或密码错误"),
     VOTE_REPEAT("您已点赞或点踩过"),
+    FOLLOW_REPEAT("您已关注过"),
     ;
 
     private String desc;

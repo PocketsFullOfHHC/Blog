@@ -50,7 +50,7 @@
                     {{user.selfIntro}}
                 </div>
             </a-descriptions-item>
-            <a-descriptions-item label="个性标签" :span="4">
+            <a-descriptions-item label="个性标签：" :span="4">
                 <div v-if="isEdit">
                     <template v-for="(tag, index) in tags" :key="tag">
                         <a-tooltip v-if="tag.length > 10" :title="tag">

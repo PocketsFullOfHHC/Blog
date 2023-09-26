@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhc.blogs.mapper.FollowMapperCust">
+
+    <!-- 取消关注 -->
+    <update id="unFollow">
+        delete from follow where like_id = #{likeId} and beliked_id = #{beLikedId}
+    </update>
+
+    <select id="ifFollowed" resultType="com.hhc.blogs.domain.Follow">
+        select `id` id, `like_id` likeid, `beliked_id` belikedId, `follow _time` followTime from follow where like_id = #{likeId} and beliked_id = #{beLikedId}
+    </select>
+
+    <!-- 关注列表 -->
+    <select id="followList" resultType="com.hhc.blogs.domain.Follow">
+        select `id` id, `like_id` likeid, `beliked_id` belikedId, `follow _time` followTime from follow  where like_id = #{likeId} order by `follow _time` desc
+    </select>
+
+</mapper>

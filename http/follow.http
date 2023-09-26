@@ -1,0 +1,11 @@
+GET http://localhost:8080/follow/follow/355950515865128960/1
+
+###
+
+GET http://localhost:8080/follow/unFollow/355950515865128960/355341447748259840
+
+###
+
+GET http://localhost:8080/follow/isFollowed/355950515865128960/355341447748259840
+
+###
