@@ -195,6 +195,11 @@
                     message.warn("请勿提交空内容");
                     return;
                 }
+                // 判断是否登录
+                if(!comment.commentatorId){
+                    message.warn("请登录后再评论博客")
+                    return;
+                }
                 submitting.value = true;
                 comment.content = content.value;
                 axios.post("/comment/save", comment).then((response) =>{
@@ -227,6 +232,11 @@
             const action = ref<string>('none');
 
             const like = () => {
+                // 判断是否登录
+                if(!likeReq.commentatorId){
+                    message.warn("请登录后再点赞")
+                    return;
+                }
                 likeReq.isLike = true;
                 axios.post("/likes/save", likeReq).then((response) => {
                     const data = response.data;
@@ -242,6 +252,10 @@
             };
 
             const dislike = () => {
+                if(!likeReq.commentatorId){
+                    message.warn("请登录后再点踩")
+                    return;
+                }
                 likeReq.isLike = false;
                 axios.post("/likes/save", likeReq).then((response) => {
                     const data = response.data;
@@ -257,6 +271,9 @@
 
             // 登录者是否点赞
             const isMyLike = () => {
+                if(!store.state.user.id){
+                    return;
+                }
                 for (let item of store.state.likes){
                     if (item.blogId === props.blogList.id && item.isLike){
                         action.value = 'liked';
@@ -276,6 +293,7 @@
             }]);
             const blogsLike = () => {
                 axios.get("/likes/listByBlog/" + props.blogList.id).then((response) => {
+                    likesName.value = [{}];
                     const data = response.data;
                     if (data.success){
                         if(data.content.length !== 0){
