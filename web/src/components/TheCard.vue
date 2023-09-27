@@ -41,9 +41,9 @@
                 item-layout="horizontal"
         >
             <template #renderItem="{ index, item }">
-                <a v-if="item.likeName !== undefined && index === likesName.length - 1">{{item.likeName}}。</a>
-                <a v-else-if="item.likeName !== undefined && index !== likesName.length - 1">{{item.likeName}}，</a>
-                <a v-else><LikeTwoTone/>{{item.likeName}}点赞者：</a>
+                <a style="pointer-events:none" v-if="item.likeName !== undefined && index === likesName.length - 1">{{item.likeName}}。</a>
+                <a style="pointer-events:none" v-else-if="item.likeName !== undefined && index !== likesName.length - 1">{{item.likeName}}，</a>
+                <a style="pointer-events:none" v-else><LikeTwoTone/>{{item.likeName}}点赞者：</a>
             </template>
         </a-list>
         <template #author><a>{{blogList.authorName}}</a></template>
@@ -65,7 +65,7 @@
             :data-source="comments"
             :header="`共${comments.length}条评论`"
             item-layout="horizontal"
-            :style="{paddingLeft:'40px'}"
+            :style="{paddingLeft:'45px'}"
     >
         <template #renderItem="{ item }">
             <a-list-item>
@@ -234,6 +234,7 @@
                         message.success("点赞成功");
                         action.value = 'liked';
                         props.blogList.voteNum ++;
+                        blogsLike();
                     } else {
                         message.error(data.message);
                     }

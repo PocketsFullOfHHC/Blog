@@ -8,7 +8,7 @@
                     <a-button type="primary" @click="cancelEdit">取消</a-button>
                 </div>
             </template>
-            <a-descriptions-item label="用户昵称：" :span="2">
+            <a-descriptions-item label="昵称：" :span="2" >
                 <div v-if="isEdit">
                     <a-input type="text" :style="{width:'200px'}" v-model:value="user.name" />
                 </div>

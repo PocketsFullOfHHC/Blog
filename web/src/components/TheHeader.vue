@@ -206,6 +206,8 @@
                         console.log(data.content);
                         store.commit("setUser", data.content);
                         message.success("登录成功！");
+                        // 跳转到首页(刷新首页显示头像)
+                        push('/');
                     } else {
                         message.error(data.message);
                     }
@@ -242,6 +244,8 @@
                                 store.commit("setUser", res.data.content);
                                 message.success('注册并自动登录成功');
                                 signUpVisible.value = false;
+                                // 跳转到首页(刷新首页显示头像)
+                                push('/');
                             } else {
                                 message.error(res.data.message);
                             }

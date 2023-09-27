@@ -137,6 +137,10 @@
 
             // 关注
             const follow = () => {
+                if(store.state.user.id === authorId){
+                    message.error("自己不能关注自己");
+                    return;
+                }
                 axios.get(`/follow/follow/${store.state.user.id}/${authorId}`).then((response) => {
                     if (response.data.success){
                         const data = response.data.content;
