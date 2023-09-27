@@ -5,6 +5,7 @@ import com.hhc.blogs.exception.BusinessException;
 import com.hhc.blogs.exception.BusinessExceptionCode;
 import com.hhc.blogs.mapper.LikesMapperCust;
 import com.hhc.blogs.req.LikesSaveReq;
+import com.hhc.blogs.resp.BlogListResp;
 import com.hhc.blogs.resp.LikesListByBlogResp;
 import com.hhc.blogs.resp.LikesListResp;
 import com.hhc.blogs.util.CopyUtil;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,12 +31,28 @@ public class LikesService {
     @Resource
     private LikesMapperCust likesMapperCust;
 
+    @Resource
+    private BlogService blogService;
+
     /**
      * 按时间获取指定用户的点赞信息
      * */
     public List<LikesListResp> list(Long userId){
         List<LikesListResp> likesList = likesMapperCust.getLikesList(userId);
         return likesList;
+    }
+
+    /**
+     * 查询过往点的详细内容
+     * */
+    public List<BlogListResp> likeList(Long userId){
+        List<LikesListResp> likesList = likesMapperCust.getLikesList(userId);
+        List<BlogListResp> blogsList = new ArrayList<>();
+        for (LikesListResp likeResp: likesList) {
+            BlogListResp blog = blogService.getBlogById(likeResp.getBlogId());
+            blogsList.add(blog);
+        }
+        return blogsList;
     }
 
     /**

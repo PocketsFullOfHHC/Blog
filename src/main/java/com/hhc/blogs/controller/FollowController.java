@@ -2,6 +2,7 @@ package com.hhc.blogs.controller;
 
 import com.hhc.blogs.domain.Follow;
 import com.hhc.blogs.resp.CommonResp;
+import com.hhc.blogs.resp.UserInfoResp;
 import com.hhc.blogs.service.FollowService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/follow")
@@ -54,6 +56,17 @@ public class FollowController {
         }else {
             resp.setContent(true);
         }
+        return resp;
+    }
+
+    /**
+     * 获取关注列表
+     * */
+    @GetMapping("/followList/{likeId}")
+    public CommonResp<List<UserInfoResp>> followList(@PathVariable String likeId){
+        CommonResp<List<UserInfoResp>> resp = new CommonResp<>();
+        List<UserInfoResp> userFollowRespList = followService.followList(likeId);
+        resp.setContent(userFollowRespList);
         return resp;
     }
 }

@@ -3,11 +3,13 @@ package com.hhc.blogs.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hhc.blogs.domain.Blog;
+import com.hhc.blogs.domain.BlogExample;
 import com.hhc.blogs.mapper.BlogMapper;
 import com.hhc.blogs.mapper.BlogMapperCust;
 import com.hhc.blogs.req.BlogPublishReq;
 import com.hhc.blogs.resp.BlogListResp;
 import com.hhc.blogs.resp.BlogResp;
+import com.hhc.blogs.resp.UserInfoResp;
 import com.hhc.blogs.util.CopyUtil;
 import com.hhc.blogs.util.SnowFlake;
 import org.slf4j.Logger;
@@ -31,6 +33,9 @@ public class BlogService {
 
     @Resource
     private SnowFlake snowFlake;
+
+    @Resource
+    private UserService userService;
 
     /**
      * 测试blog
@@ -91,4 +96,19 @@ public class BlogService {
         blogMapperCust.increaseComment(blogId);
     }
 
+    /**
+     * 按博客ID查找博客
+     * */
+    public BlogListResp getBlogById(Long blogId){
+        BlogExample blogExample = new BlogExample();
+        BlogExample.Criteria criteria = blogExample.createCriteria();
+        criteria.andIdEqualTo(blogId);
+        List<Blog> blogs = blogMapper.selectByExampleWithBLOBs(blogExample);
+        Blog blog = blogs.get(0);
+        UserInfoResp userInfo = userService.getUserInfo(blog.getAuthorId());
+        BlogListResp blogList = CopyUtil.copy(blog, BlogListResp.class);
+        blogList.setAuthorName(userInfo.getName());
+        LOG.info("根据博客ID查找的博客信息为：{}", blogList);
+        return blogList;
+    }
 }

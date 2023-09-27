@@ -41,9 +41,15 @@
                     </span>
                 </div>
             </a-descriptions-item>
-            <a-descriptions-item label="点赞内容：" :span="4">
-                <div>
-                    <!--{{userLike}}}-->
+            <a-descriptions-item label="最近点赞：" :span="4">
+                <div style="background-color: #ececec; padding: 20px">
+                    <a-row :gutter="8">
+                        <a-col :span="6" v-for="(userLike) in userLike" :key="userLike.id">
+                            <a-card :title="userLike.authorName" :bordered="false" size="small">
+                                <p v-html="userLike.content.slice(0, 10)"></p>...
+                            </a-card>
+                        </a-col>
+                    </a-row>
                 </div>
             </a-descriptions-item>
         </a-descriptions>
@@ -77,9 +83,14 @@
              * */
             const userLike = ref([]);
             const getUserLikes = () => {
-                axios.get("/likes/list/" + authorId).then((response) => {
+                axios.get("/likes/blogList/" + authorId).then((response) => {
                     const data = response.data.content;
-                    userLike.value = data;
+                    if (data.length >= 4){
+                        userLike.value = data.slice(0, 4);
+                    } else {
+                        userLike.value = data;
+                    }
+                    console.log("用户点赞信息：", userLike.value);
                 })
             };
 

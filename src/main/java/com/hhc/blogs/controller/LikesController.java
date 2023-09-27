@@ -1,9 +1,7 @@
 package com.hhc.blogs.controller;
 
 import com.hhc.blogs.req.LikesSaveReq;
-import com.hhc.blogs.resp.LikesListByBlogResp;
-import com.hhc.blogs.resp.LikesListResp;
-import com.hhc.blogs.resp.CommonResp;
+import com.hhc.blogs.resp.*;
 import com.hhc.blogs.service.LikesService;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +23,17 @@ public class LikesController {
         CommonResp<List<LikesListResp>> resp = new CommonResp<>();
         List<LikesListResp> likesList = likesService.list(userId);
         resp.setContent(likesList);
+        return resp;
+    }
+
+    /**
+     * 获取关注列表
+     * */
+    @GetMapping("/blogList/{userId}")
+    public CommonResp<List<BlogListResp>> LikesListIncludeInfo(@PathVariable Long userId){
+        CommonResp<List<BlogListResp>> resp = new CommonResp<>();
+        List<BlogListResp> blogList = likesService.likeList(userId);
+        resp.setContent(blogList);
         return resp;
     }
 

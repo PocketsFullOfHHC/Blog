@@ -5,6 +5,7 @@ import com.hhc.blogs.exception.BusinessException;
 import com.hhc.blogs.exception.BusinessExceptionCode;
 import com.hhc.blogs.mapper.FollowMapper;
 import com.hhc.blogs.mapper.FollowMapperCust;
+import com.hhc.blogs.resp.UserInfoResp;
 import com.hhc.blogs.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class FollowService {
@@ -61,5 +64,18 @@ public class FollowService {
     public Follow ifFollowed(String likeId, String beLikedId){
         Follow follow = followMapperCust.ifFollowed(Long.parseLong(likeId), Long.parseLong(beLikedId));
         return follow;
+    }
+
+    /**
+     * 查询关注列表
+     * */
+    public List<UserInfoResp> followList(String likeId){
+        List<Follow> followList = followMapperCust.followList(Long.parseLong(likeId));
+        List<UserInfoResp> userInfoRespList = new ArrayList<>();
+        for (Follow follow: followList) {
+            UserInfoResp userInfo = userService.getUserInfo(follow.getBelikedId());
+            userInfoRespList.add(userInfo);
+        }
+        return userInfoRespList;
     }
 }
