@@ -59,7 +59,7 @@
                                 {{ `${tag.slice(0, 10)}...` }}
                             </a-tag>
                         </a-tooltip>
-                        <a-tag v-else :closable="index !== 0" @close="handleClose(tag)">
+                        <a-tag v-else :closable="index !== -1" @close="handleClose(tag)">
                             {{ tag }}
                         </a-tag>
                     </template>
