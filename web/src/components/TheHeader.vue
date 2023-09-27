@@ -209,7 +209,7 @@
                         store.commit("setUser", data.content);
                         message.success("登录成功！");
                         // 跳转到首页(刷新首页显示头像)
-                        push('/');
+                        location.reload();
                     } else {
                         message.error(data.message);
                     }
@@ -247,7 +247,7 @@
                                 message.success('注册并自动登录成功');
                                 signUpVisible.value = false;
                                 // 跳转到首页(刷新首页显示头像)
-                                push('/');
+                                location.reload();
                             } else {
                                 message.error(res.data.message);
                             }
