@@ -18,7 +18,7 @@
                         }">
                             <a-button size="small" type="primary" style="margin-left: 30px">编辑</a-button>
                         </router-link>
-                        <a-popconfirm title="确定要删除这篇帖子？" ok-text="是" cancel-text="否">
+                        <a-popconfirm title="确定要删除这篇帖子？" @confirm="deleteBlog(item.id)" ok-text="是" cancel-text="否">
                             <a-button size="small" danger type="primary" style="margin-left: 10px">删除</a-button>
                         </a-popconfirm>
                         <a-divider></a-divider>
@@ -90,6 +90,19 @@
                 }
             };
 
+            /**
+             * 删除博客
+             * */
+            const deleteBlog = (blogId:number) => {
+                axios.get("/blog/deleteByBlogId/" + blogId).then((response) => {
+                    if(response.data.success){
+                        getAllBlog(1);
+                        getBlogNum();
+                        message.success("帖子删除成功！")
+                    }
+                })
+            };
+
             onMounted(()=>{
                 getAllBlog(1);
                 getBlogNum();
@@ -102,6 +115,7 @@
                 current,
                 getAllBlog,
                 blogNum,
+                deleteBlog,
             }
         },
     });

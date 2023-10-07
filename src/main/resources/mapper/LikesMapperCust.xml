@@ -28,5 +28,4 @@
     <select id="getLikesRepeat" parameterType="com.hhc.blogs.domain.Likes" resultType="com.hhc.blogs.domain.Likes">
         select * from likes where blog_id = #{blogId} and commentator_id = #{commentatorId}
     </select>
-
 </mapper>

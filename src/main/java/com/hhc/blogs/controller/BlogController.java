@@ -103,4 +103,14 @@ public class BlogController {
         blogService.edit(req);
         return resp;
     }
+
+    /**
+     * 删除博客
+     * */
+    @GetMapping("/deleteByBlogId/{blogId}")
+    public CommonResp<Object> deleteBlogById(@PathVariable Long blogId) {
+        CommonResp<Object> resp = new CommonResp<>();
+        blogService.deleteBlogById(blogId);
+        return resp;
+    }
 }

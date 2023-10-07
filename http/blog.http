@@ -38,3 +38,7 @@ Content-Type: application/json
 }
 
 ###
+
+GET http://localhost:8080/blog/deleteByBlogId/365784960684134400
+
+###

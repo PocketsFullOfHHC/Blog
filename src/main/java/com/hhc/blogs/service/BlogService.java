@@ -4,8 +4,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hhc.blogs.domain.Blog;
 import com.hhc.blogs.domain.BlogExample;
+import com.hhc.blogs.domain.CommentExample;
+import com.hhc.blogs.domain.LikesExample;
 import com.hhc.blogs.mapper.BlogMapper;
 import com.hhc.blogs.mapper.BlogMapperCust;
+import com.hhc.blogs.mapper.CommentMapper;
+import com.hhc.blogs.mapper.LikesMapper;
 import com.hhc.blogs.req.BlogEditReq;
 import com.hhc.blogs.req.BlogPublishReq;
 import com.hhc.blogs.resp.BlogListResp;
@@ -28,6 +32,12 @@ public class BlogService {
 
     @Resource
     private BlogMapper blogMapper;
+
+    @Resource
+    private CommentMapper commentMapper;
+
+    @Resource
+    private LikesMapper likesMapper;
 
     @Resource
     private BlogMapperCust blogMapperCust;
@@ -143,5 +153,26 @@ public class BlogService {
      * */
     public void edit(BlogEditReq req){
         blogMapperCust.editBlogById(req);
+    }
+
+    /**
+     * 删除博客
+     * */
+    public void deleteBlogById(Long blogId){
+        CommentExample commentExample = new CommentExample();
+        CommentExample.Criteria commentCriteria = commentExample.createCriteria();
+        commentCriteria.andBlogIdEqualTo(blogId);
+        LOG.info("删除帖子{}评论",blogId);
+        commentMapper.deleteByExample(commentExample);
+        LikesExample likesExample = new LikesExample();
+        LikesExample.Criteria likesCriteria = likesExample.createCriteria();
+        likesCriteria.andBlogIdEqualTo(blogId);
+        LOG.info("删除帖子{}点赞点踩",blogId);
+        likesMapper.deleteByExample(likesExample);
+        BlogExample blogExample = new BlogExample();
+        BlogExample.Criteria blogCriteria = blogExample.createCriteria();
+        blogCriteria.andIdEqualTo(blogId);
+        LOG.info("删除帖子id：{}",blogId);
+        blogMapper.deleteByExample(blogExample);
     }
 }

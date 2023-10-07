@@ -7,5 +7,4 @@
         select t1.`id` id, `blog_id` blogId, `name` commentatorName,  t2.`id` commentatorId, `comment_time` commentTime, `content`, t2.`avatar` avatar
         from `comment` t1, `user` t2 where t1.commentator_id = t2.id and t1.blog_id = #{blogId} order by t1.comment_time asc
     </select>
-
 </mapper>
