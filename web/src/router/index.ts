@@ -3,15 +3,21 @@ import HomeView from '../views/HomeView.vue';
 import AdminMyself from '../views/admin/AdminMyself.vue';
 import AdminPublish from '../views/admin/AdminPublish.vue';
 import AdminFind from '../views/admin/AdminFind.vue';
-import AdminUserInfo from '../views/admin/AdminUserInfo.vue'
-import AdminUserHomePage from '../views/admin/AdminUserHomePage.vue'
-import AdminFriend from '../views/admin/AdminFriend.vue'
+import AdminUserInfo from '../views/admin/AdminUserInfo.vue';
+import AdminUserHomePage from '../views/admin/AdminUserHomePage.vue';
+import AdminFriend from '../views/admin/AdminFriend.vue';
+import AdminFollow from '../views/admin/AdminFollow.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path: '/follow',
+    name: 'follow',
+    component: AdminFollow
   },
   {
     path: '/myself',

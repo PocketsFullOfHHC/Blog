@@ -80,7 +80,7 @@
     </a-list>
 
     <!-- 发表评论 -->
-    <a-comment v-if="commentShow" :style="{paddingLeft:'40px'}">
+    <a-comment v-if="commentShow" :style="{paddingLeft:'50px'}">
         <template #avatar>
             <a-avatar :src="'http://localhost:8080/picture/avatars/' + avatarName" alt="Han Solo" />
         </template>
