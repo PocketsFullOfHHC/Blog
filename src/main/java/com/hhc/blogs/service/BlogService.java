@@ -37,6 +37,9 @@ public class BlogService {
     @Resource
     private UserService userService;
 
+    @Resource
+    private FollowService followService;
+
     /**
      * 测试blog
      * */
@@ -110,5 +113,27 @@ public class BlogService {
         blogList.setAuthorName(userInfo.getName());
         LOG.info("根据博客ID查找的博客信息为：{}", blogList);
         return blogList;
+    }
+
+    /**
+     * 获取用户好友的博客
+     * */
+    public List<BlogListResp> followBlogListByPage(int pageNum, int pageSize, Long userId){
+        List<UserInfoResp> followUserList = followService.followList(userId.toString());
+        PageHelper.startPage(pageNum, pageSize);
+        List<BlogListResp> blogListRespList = blogMapperCust.followBlogList(followUserList);
+        PageInfo<BlogListResp> pageInfo = new PageInfo<>(blogListRespList);
+        LOG.info("总行数：{}", pageInfo.getTotal());
+        LOG.info("总页数：{}", pageInfo.getPages());
+        return blogListRespList;
+    }
+
+    /**
+     * 获取我关注的人博客数量
+     * */
+    public Integer myFollowBlogNum(Long userId){
+        List<UserInfoResp> userInfoRespList = followService.followList(userId.toString());
+        List<BlogListResp> blogListResp = blogMapperCust.followBlogList(userInfoRespList);
+        return blogListResp.size();
     }
 }
