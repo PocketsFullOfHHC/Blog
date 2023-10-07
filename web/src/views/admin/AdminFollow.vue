@@ -28,7 +28,7 @@
     import store from '@/store'
     import { message } from "ant-design-vue";
     export default defineComponent({
-        name: "AdminMyself",
+        name: "AdminFollow",
         components: {
             TheCard,
             TheSider,

@@ -6,6 +6,7 @@ import com.hhc.blogs.domain.Blog;
 import com.hhc.blogs.domain.BlogExample;
 import com.hhc.blogs.mapper.BlogMapper;
 import com.hhc.blogs.mapper.BlogMapperCust;
+import com.hhc.blogs.req.BlogEditReq;
 import com.hhc.blogs.req.BlogPublishReq;
 import com.hhc.blogs.resp.BlogListResp;
 import com.hhc.blogs.resp.BlogResp;
@@ -135,5 +136,12 @@ public class BlogService {
         List<UserInfoResp> userInfoRespList = followService.followList(userId.toString());
         List<BlogListResp> blogListResp = blogMapperCust.followBlogList(userInfoRespList);
         return blogListResp.size();
+    }
+
+    /**
+     * 编辑博客
+     * */
+    public void edit(BlogEditReq req){
+        blogMapperCust.editBlogById(req);
     }
 }

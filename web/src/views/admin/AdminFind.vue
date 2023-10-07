@@ -6,9 +6,9 @@
         <a-layout style="padding: 24px 0; background: #fff">
             <the-sider></the-sider>
             <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
-                        <div v-for="(item,index) in blogList" :key="index" >
-                            <TheCard :blogList="item"></TheCard>
-                        </div>
+                <div v-for="(item,index) in blogList" :key="index" >
+                    <TheCard :blogList="item"></TheCard>
+                </div>
             </a-layout-content>
         </a-layout>
     </a-layout-content>

@@ -28,3 +28,13 @@ GET http://localhost:8080/blog/myFollowBlogListByPage/1/2/355950515865128960
 GET http://localhost:8080/blog/myFollowBlogNum/355950515865128960
 
 ###
+
+POST http://localhost:8080/blog/edit
+Content-Type: application/json
+
+{
+  "blogId": 3,
+  "content": "这并不是我的第一条博客！"
+}
+
+###

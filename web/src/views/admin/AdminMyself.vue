@@ -8,6 +8,21 @@
             <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
                 <div v-for="item in blogList" :key="item.id" >
                     <TheCard :blogList="item"></TheCard>
+                    <div :style="{marginTop : '20px', marginLeft: '10px'}">
+                        <router-link :to="{
+                          path:'/edit',
+                          query:{
+                            blogId: item.id,
+                            content:item.content,
+                          }
+                        }">
+                            <a-button size="small" type="primary" style="margin-left: 30px">编辑</a-button>
+                        </router-link>
+                        <a-popconfirm title="确定要删除这篇帖子？" ok-text="是" cancel-text="否">
+                            <a-button size="small" danger type="primary" style="margin-left: 10px">删除</a-button>
+                        </a-popconfirm>
+                        <a-divider></a-divider>
+                    </div>
                 </div>
                 <a-pagination
                         v-model:current="current"

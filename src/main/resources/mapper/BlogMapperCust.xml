@@ -30,4 +30,9 @@
         order by t1.publish_time desc
     </select>
 
+    <!-- 修改博客 -->
+    <update id="editBlogById" parameterType="com.hhc.blogs.req.BlogEditReq">
+        update blog set content = #{content} where id = #{blogId};
+    </update>
+
 </mapper>

@@ -1,5 +1,6 @@
 package com.hhc.blogs.mapper;
 
+import com.hhc.blogs.req.BlogEditReq;
 import com.hhc.blogs.resp.BlogListResp;
 import com.hhc.blogs.resp.UserInfoResp;
 import org.apache.ibatis.annotations.Param;
@@ -14,4 +15,6 @@ public interface BlogMapperCust {
     public void increaseComment(Long id);
 
     public List<BlogListResp> followBlogList(@Param("listParam") List<UserInfoResp> followUserList);
+
+    public void editBlogById(BlogEditReq blogEditReq);
 }

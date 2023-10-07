@@ -1,5 +1,6 @@
 package com.hhc.blogs.controller;
 
+import com.hhc.blogs.req.BlogEditReq;
 import com.hhc.blogs.req.BlogPublishReq;
 import com.hhc.blogs.resp.BlogListResp;
 import com.hhc.blogs.resp.BlogResp;
@@ -8,6 +9,7 @@ import com.hhc.blogs.service.BlogService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -89,6 +91,16 @@ public class BlogController {
         CommonResp<Object> resp = new CommonResp<>();
         Integer blogNum = blogService.myFollowBlogNum(userId);
         resp.setContent(blogNum);
+        return resp;
+    }
+
+    /**
+     * 编辑博客
+     * */
+    @PostMapping("/edit")
+    public CommonResp<Object> blogSave(@Valid @RequestBody BlogEditReq req) {
+        CommonResp<Object> resp = new CommonResp<>();
+        blogService.edit(req);
         return resp;
     }
 }

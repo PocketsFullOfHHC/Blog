@@ -7,12 +7,18 @@ import AdminUserInfo from '../views/admin/AdminUserInfo.vue';
 import AdminUserHomePage from '../views/admin/AdminUserHomePage.vue';
 import AdminFriend from '../views/admin/AdminFriend.vue';
 import AdminFollow from '../views/admin/AdminFollow.vue';
+import AdminBlogEdit from '../views/admin/AdminBlogEdit.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path: '/edit',
+    name: 'edit',
+    component: AdminBlogEdit
   },
   {
     path: '/follow',
