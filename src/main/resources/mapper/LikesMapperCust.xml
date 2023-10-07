@@ -11,7 +11,7 @@
     <!-- 按时间顺序获取指定博客点赞信息 -->
     <select id="getLikesListByBlog" resultType="com.hhc.blogs.resp.LikesListByBlogResp">
         select t1.`id` id, `commentator_id` commentatorId, `blog_id` blogId, `comment_time` commentTime, `is_like` isLike, `name` name
-        from `likes` t1, `user` t2 where t1.commentator_id = t2.id and t1.blog_id = #{blogId} order by t1.comment_time desc;
+        from `likes` t1, `user` t2 where t1.commentator_id = t2.id and t1.blog_id = #{blogId} and t1.is_like = 1 order by t1.comment_time desc;
     </select>
 
     <!-- 提交点赞 -->
