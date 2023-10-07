@@ -52,8 +52,8 @@ public class BlogController {
      * 获取我的分页数据总条数
      * */
     @GetMapping("/myBlogNum/{userId}")
-    public CommonResp blogNum(@PathVariable Long userId){
-        CommonResp resp = new CommonResp<>();
+    public CommonResp<Object> blogNum(@PathVariable Long userId){
+        CommonResp<Object> resp = new CommonResp<>();
         Integer blogNum = blogService.blogNum(userId);
         resp.setContent(blogNum);
         return resp;
@@ -67,6 +67,28 @@ public class BlogController {
         CommonResp<List<BlogListResp>> resp = new CommonResp<>();
         List<BlogListResp> blogListRespList = blogService.AllList();
         resp.setContent(blogListRespList);
+        return resp;
+    }
+
+    /**
+     * 分页查询我的朋友博客
+     * */
+    @GetMapping("/myFollowBlogListByPage/{pageNum}/{pageSize}/{userId}")
+    public CommonResp<List<BlogListResp>> myFollowBlogListByPage(@PathVariable Integer pageNum, @PathVariable Integer pageSize, @PathVariable Long userId) {
+        CommonResp<List<BlogListResp>> resp = new CommonResp<>();
+        List<BlogListResp> blogList = blogService.followBlogListByPage(pageNum, pageSize, userId);
+        resp.setContent(blogList);
+        return resp;
+    }
+
+    /**
+     * 获取我的朋友博客总数
+     * */
+    @GetMapping("/myFollowBlogNum/{userId}")
+    public CommonResp<Object> myFollowBlogNum(@PathVariable Long userId) {
+        CommonResp<Object> resp = new CommonResp<>();
+        Integer blogNum = blogService.myFollowBlogNum(userId);
+        resp.setContent(blogNum);
         return resp;
     }
 }

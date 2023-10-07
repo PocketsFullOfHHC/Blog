@@ -19,4 +19,15 @@
         update blog set comment_num = comment_num + 1 where id = #{id};
     </update>
 
+    <!-- 通过好友列表获取博客 -->
+    <!-- 批量查询：collection为参数名，item为迭代元素类型，返回的结果为list结合 -->
+    <select id="followBlogList" parameterType="java.util.List" resultType="com.hhc.blogs.resp.BlogListResp">
+        select t1.`id` id, `author_id` authorId, `username` authorName, `publish_time` publishTime, `content`, `vote_num` voteNum, `oppose_num` opposeNum, `comment_num` commentNum, t2.`avatar` avatar
+        from `blog` t1, `user` t2 where t1.author_id = t2.id and author_id in
+        <foreach collection="listParam" item="user" open=" (" separator="," close=")">
+            #{user.id}
+        </foreach>
+        order by t1.publish_time desc
+    </select>
+
 </mapper>
