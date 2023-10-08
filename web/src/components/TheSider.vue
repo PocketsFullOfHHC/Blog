@@ -1,54 +1,69 @@
 <template>
     <a-layout-sider width="250" style="background: #fff" padding="200px">
-        <a-menu
-                mode="inline"
-                style="height: 100%"
-        >
+        <a-menu mode="inline" style="height: 100%">
             <a-sub-menu key="sub1">
+                <a-menu-item v-for="( friend ) in followList" :key="friend.id">
+                    <router-link :to="{
+                          path:'/chat',
+                          query:{
+                            friendId: friend.id,
+                            friendName: friend.name,
+                            friendAvatar: friend.avatar,
+                          }
+                    }">
+                        <a-avatar :src="'http://localhost:8080/picture/avatars/' + friend.avatar" alt="头像"/>
+                        <span style="margin-left: 30px">
+                            {{friend.name}}
+                        </span>
+                    </router-link>
+                </a-menu-item>
                 <template #title>
-                <span>
-                  <user-outlined />
-                  subnav 1
-                </span>
+                    <span>
+                      我的朋友
+                    </span>
                 </template>
-                <a-menu-item key="1">option1</a-menu-item>
-                <a-menu-item key="2">option2</a-menu-item>
-                <a-menu-item key="3">option3</a-menu-item>
-                <a-menu-item key="4">option4</a-menu-item>
             </a-sub-menu>
             <a-sub-menu key="sub2">
                 <template #title>
-                <span>
-                  <laptop-outlined />
-                  subnav 2
-                </span>
+                    <span>
+                      我的部落
+                    </span>
                 </template>
                 <a-menu-item key="5">option5</a-menu-item>
                 <a-menu-item key="6">option6</a-menu-item>
                 <a-menu-item key="7">option7</a-menu-item>
                 <a-menu-item key="8">option8</a-menu-item>
             </a-sub-menu>
-            <a-sub-menu key="sub3">
-                <template #title>
-                <span>
-                  <notification-outlined />
-                  subnav 3
-                </span>
-                </template>
-                <a-menu-item key="9">option9</a-menu-item>
-                <a-menu-item key="10">option10</a-menu-item>
-                <a-menu-item key="11">option11</a-menu-item>
-                <a-menu-item key="12">option12</a-menu-item>
-            </a-sub-menu>
         </a-menu>
     </a-layout-sider>
 </template>
 
 <script lang="ts">
-    import {defineComponent} from 'vue';
-    export default defineComponent ({
+    import { ref, onMounted } from 'vue';
+    import axios from 'axios'
+    import store from '@/store'
+    export default {
         name: "TheSider",
-    })
+        setup(){
+            const followList = ref();
+            const getFollowList = () => {
+                axios.get("/follow/followList/" + store.state.user.id).then((response) => {
+                    const data = response.data;
+                    if (data){
+                        followList.value = data.content ? data.content :[];
+                        console.log("聊天对象：", followList)
+                    }
+                })
+            };
+            onMounted(() => {
+                getFollowList();
+            });
+            return{
+                getFollowList,
+                followList,
+            }
+        }
+    }
 </script>
 
 <style scoped>

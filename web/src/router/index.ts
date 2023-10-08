@@ -8,6 +8,7 @@ import AdminUserHomePage from '../views/admin/AdminUserHomePage.vue';
 import AdminFriend from '../views/admin/AdminFriend.vue';
 import AdminFollow from '../views/admin/AdminFollow.vue';
 import AdminBlogEdit from '../views/admin/AdminBlogEdit.vue';
+import AdminChat from '../views/admin/AdminChat.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -54,6 +55,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/userHomePage',
     name: 'userHomePage',
     component: AdminUserHomePage
+  },
+  {
+    path: '/chat',
+    name: 'chat',
+    component: AdminChat
   },
   {
     path: '/about',
