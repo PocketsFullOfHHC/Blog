@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 public class LikesService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LikesService.class);
 
     @Resource
     private SnowFlake snowFlake;

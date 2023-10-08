@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class CommentService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CommentService.class);
 
     @Resource
     private SnowFlake snowFlake;

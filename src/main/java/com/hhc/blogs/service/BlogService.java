@@ -28,7 +28,7 @@ import java.util.List;
 @Service
 public class BlogService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BlogService.class);
 
     @Resource
     private BlogMapper blogMapper;
