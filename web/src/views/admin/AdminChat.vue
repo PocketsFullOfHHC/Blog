@@ -29,9 +29,9 @@
             <!-- 输入框 -->
             <div style="margin-top: 50px">
                 <a-input-group compact>
-                    <a-input v-model:value="content" style="width: calc(100% - 130px)" />
+                    <a-input v-model:value="content" style="width: calc(100% - 130px)" placeholder="请输入..."/>
                     <a-button type="primary" @click="sendMessage" >发送</a-button>
-                    <a-button type="primary" danger @click="content = null" style="float: right">清空</a-button>
+                    <a-button type="primary" danger @click="clearContent" style="float: right">清空</a-button>
                 </a-input-group>
             </div>
         </div>
@@ -108,6 +108,10 @@
              * 发消息
              * */
             const sendMessage = ()=> {
+                if(content.value === "" || content.value === "undefined"){
+                    message.warn("发送内容不可为空");
+                    return;
+                }
                 ws.send(content.value);
                 const messageItem = {
                     senderId: store.state.user.id,
@@ -122,6 +126,10 @@
                     }
                     chatWindow.scrollTop = chatWindow.scrollHeight
                 });
+                content.value = '';
+            };
+
+            const clearContent = () => {
                 content.value = '';
             };
 
@@ -150,6 +158,7 @@
                 ws,
                 messageList,
                 content,
+                clearContent,
                 add,
                 sendMessage,
                 close,

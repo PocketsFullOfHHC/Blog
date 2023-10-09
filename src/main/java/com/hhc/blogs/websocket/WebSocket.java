@@ -61,10 +61,10 @@ public class WebSocket {
      * @param throwable 错误
      */
     @OnError
-    public void onError(Session session, Throwable throwable,@PathParam("userName") String userName) throws IOException {
-        LOG.info("{},出现错误", userName);
-        session.close();
-        sessions.remove(userName);
+    public void onError(Session session, Throwable throwable,@PathParam("userName") String userName, Throwable error) throws IOException {
+        LOG.info("{}，出现错误，{}", userName, error);
+//        session.close();
+//        sessions.remove(userName);
     }
 
     /**
