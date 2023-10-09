@@ -51,8 +51,9 @@ public class WebSocket {
     @OnClose
     public void onClose(Session session,@PathParam("userName") String userName, @PathParam("friendName") String friendName) throws IOException {
         session.close();
-        LOG.info("{}，断开连接",userName);
-        sessions.remove(userName);
+        String chatId = userName + ":" + friendName;
+        LOG.info("{}，断开连接",chatId);
+        sessions.remove(chatId);
     }
 
     /**
@@ -62,9 +63,9 @@ public class WebSocket {
      */
     @OnError
     public void onError(Session session, Throwable throwable,@PathParam("userName") String userName, Throwable error) throws IOException {
-        LOG.info("{}，出现错误，{}", userName, error);
-//        session.close();
-//        sessions.remove(userName);
+        LOG.info("{}", error);
+        session.close();
+        sessions.remove(userName);
     }
 
     /**

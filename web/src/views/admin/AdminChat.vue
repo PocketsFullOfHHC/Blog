@@ -66,6 +66,7 @@
              * 加入聊天室
              * */
             const add = ()=> {
+                console.log("add函数被执行");
                 // 创建WebSocket连接
                 ws = new WebSocket(url + store.state.user.id + '/' + proxy.$route.query.friendId);
                 console.log("webSocket的地址为：", url + store.state.user.id + '/' + proxy.$route.query.friendId);
@@ -150,6 +151,7 @@
             });
 
             onBeforeUnmount(() => {
+                console.log("websocket连接即将关闭");
                 ws.close();
             });
 
