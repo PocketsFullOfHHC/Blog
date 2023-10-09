@@ -35,11 +35,12 @@ public class WebSocket {
         LOG.info("{}->:{}，进入聊天室" , userName, friendName);
         String chatId = userName + ":" + friendName;
         if (sessions.containsKey(chatId)){
-            session.getAsyncRemote().sendText("用户名已经存在");
+//            session.getAsyncRemote().sendText("用户在线");
+            LOG.info("连接已经存在");
             return;
         }
+        // 记录session
         sessions.put(chatId, session);
-        sendMessage(String.format("%s：加入群聊", chatId), userName, friendName);
         LOG.info("有新连接：chatId：{}，session id：{}，当前连接数：{}", chatId, session.getId(), sessions.size());
     }
 
@@ -73,9 +74,9 @@ public class WebSocket {
      */
     @OnMessage
     public void onMessage(String message, @PathParam("userName") String userName, @PathParam("friendName") String friendName) {
-        LOG.info("{}：{}",userName,friendName, message);
+        LOG.info("{}：{}发送{}",userName,friendName, message);
         String chatId = userName + ":" + friendName;
-        sendMessage(String.format("%s：%s",chatId,message), userName, friendName);
+        sendMessage(String.format("%s:%s",chatId,message), userName, friendName);
     }
 
     /**
@@ -84,9 +85,10 @@ public class WebSocket {
      * @param userName 用户名
      * @param friendName 朋友名
      */
-    public void sendMessage(String message,String userName, String friendName) {
+    public void sendMessage(String message, String userName, String friendName) {
         sessions.forEach((k,v) -> {
             if (k.equals(userName + ":" +friendName) || k.equals(friendName + ":" +userName)){
+                // 给前台发送消息
                 v.getAsyncRemote().sendText(message);
             }
         });

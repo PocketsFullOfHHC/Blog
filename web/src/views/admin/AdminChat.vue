@@ -29,7 +29,7 @@
             <!-- 输入框 -->
             <div style="margin-top: 50px">
                 <a-input-group compact>
-                    <a-input style="width: calc(100% - 130px)" />
+                    <a-input v-model:value="content" style="width: calc(100% - 130px)" />
                     <a-button type="primary" @click="sendMessage" >发送</a-button>
                     <a-button type="primary" danger @click="content = null" style="float: right">清空</a-button>
                 </a-input-group>
@@ -42,6 +42,8 @@
     import { ref, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue';
     import store from '@/store';
     import axios from 'axios';
+    import dayjs from 'dayjs';
+    import { message } from "ant-design-vue";
     export default {
         setup(){
             // 基础数据
@@ -57,9 +59,8 @@
             // websocket相关数据
             let ws;
             const url = process.env.VUE_APP_WS_SERVER + '/ws/chat/';
-            let isOpenMessage = '暂未连接到服务器';
             let messageList = ref([]);
-            let message = ref();
+            let content = ref();
 
             /**
              * 加入聊天室
@@ -67,17 +68,27 @@
             const add = ()=> {
                 // 创建WebSocket连接
                 ws = new WebSocket(url + store.state.user.id + '/' + proxy.$route.query.friendId);
-                console.log("webSocket的地址为：", url + store.state.user.id + '/' + proxy.$route.query.friendId)
+                console.log("webSocket的地址为：", url + store.state.user.id + '/' + proxy.$route.query.friendId);
                 // 建立连接成功回调
                 ws.onopen = () =>{
-                    isOpenMessage = '服务器连接成功';
-                    console.log("是否连接成功：", isOpenMessage);
+                    console.log("websocket服务器连接成功");
                 };
                 // 客户端收到服务器端消息时回调
-                // 这里是收到的服务端发回的信息
+                // 这里是收到的服务端发回的信息：message为事件对象，POJO类websocket.java里面sendText的参数：chatId以及message
                 ws.onmessage = (message) => {
-                    messageList.value.push(message.data);
-
+                    const messageInfo = {
+                        senderId: '',
+                        receiverId: '',
+                        content: '',
+                        time: '',
+                    };
+                    messageInfo.senderId = message.data.split(':')[0];
+                    messageInfo.receiverId = message.data.split(':')[1];
+                    messageInfo.content = message.data.split(':')[2];
+                    messageInfo.time = dayjs().format('YYYY-MM-DD HH:mm:ss');
+                    messageList.value.push(messageInfo);
+                    console.log("发送的消息：",messageInfo);
+                    console.log("新的消息记录：",messageList);
                 };
             };
 
@@ -97,7 +108,21 @@
              * 发消息
              * */
             const sendMessage = ()=> {
-                ws.send(message.value);
+                ws.send(content.value);
+                const messageItem = {
+                    senderId: store.state.user.id,
+                    receiverId: proxy.$route.query.friendId,
+                    content: content.value,
+                };
+                let chatWindow = document.getElementById("chatWindow");
+                axios.post('/message/save', messageItem).then((response)=>{
+                    const data = response.data;
+                    if (data.success){
+                        message.success("消息发送成功！");
+                    }
+                    chatWindow.scrollTop = chatWindow.scrollHeight
+                });
+                content.value = '';
             };
 
             /**
@@ -123,9 +148,8 @@
             return {
                 url,
                 ws,
-                isOpenMessage,
                 messageList,
-                message,
+                content,
                 add,
                 sendMessage,
                 close,
