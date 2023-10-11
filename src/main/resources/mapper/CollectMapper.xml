@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhc.blogs.mapper.CollectMapper">
+
+    <!-- 按时间顺序获取用户的收藏列表 -->
+    <select id="getCollectListByUser" resultType="com.hhc.blogs.domain.Collect">
+        select t1.`id` id, `collector_id` collectorId, `blog_id` blogId, `collect_time` collectTime
+        from `collect` t1, `user` t2 where t1.collector_id = t2.id and t1.collector_id = #{userId} order by t1.collect_time desc;
+    </select>
+
+    <!-- 收藏博客 -->
+    <select id="save" parameterType="com.hhc.blogs.domain.Collect">
+        insert into collect(`id`, `collector_id`, `blog_id`, `collect_time`)
+        values (#{id}, #{collectorId}, #{blogId}, #{collectTime});
+    </select>
+
+    <!-- 取消收藏博客 -->
+    <delete id="deleteByUserIdAndBlogId">
+        delete from collect where collector_id = #{userId} and blog_id = #{blogId}
+    </delete>
+
+    <!-- 查看某篇博客的收藏记录 -->
+    <select id="getCollectByUserIdAndBlogId" resultType="com.hhc.blogs.domain.Collect">
+        select id, `collector_id` collectorId, `blog_id` blogId, `collect_time` collectTime from collect where collector_id = #{userId} and blog_id = #{blogId}
+    </select>
+
+    <!-- 删除某篇博客的全部收藏 -->
+    <delete id="deleteByBlogId">
+        delete from collect where blog_id = #{blogId}
+    </delete>
+</mapper>

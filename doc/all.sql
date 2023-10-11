@@ -178,6 +178,24 @@ create table comment
  default charset = utf8mb4
     comment '评论表';
 
+# 收藏表
+drop table if exists `collect`;
+create table collect
+(
+    id bigint not null comment '收藏id',
+    collector_id bigint not null comment '收藏人id',
+    blog_id bigint not null comment 'blog id',
+    collect_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '收藏时间',
+    constraint collect_pk
+        primary key (id),
+    constraint collect_blog_id_fk
+        foreign key (blog_id) references blog (id),
+    constraint collect_user_id_fk
+        foreign key (collector_id) references user (id)
+)engine = innodb
+ default charset = utf8mb4
+    comment '收藏表';
+
 # 点赞/点踩表
 drop table if exists `likes`;
 create table `likes`

@@ -1,0 +1,16 @@
+POST http://localhost:8080/collect/save
+Content-Type: application/json
+
+{
+  "collectorId": 355950515865128960,
+  "blogId": 357008312497213440
+}
+
+###
+
+GET http://localhost:8080/collect/delete/355950515865128960/357008312497213440
+
+###
+
+GET http://localhost:8080/collect/collectBlogList/355950515865128960
+###

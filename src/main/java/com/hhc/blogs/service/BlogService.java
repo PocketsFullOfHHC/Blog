@@ -122,6 +122,7 @@ public class BlogService {
         UserInfoResp userInfo = userService.getUserInfo(blog.getAuthorId());
         BlogListResp blogList = CopyUtil.copy(blog, BlogListResp.class);
         blogList.setAuthorName(userInfo.getName());
+        blogList.setAvatar(userInfo.getAvatar());
         LOG.info("根据博客ID查找的博客信息为：{}", blogList);
         return blogList;
     }

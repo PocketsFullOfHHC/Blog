@@ -88,6 +88,7 @@
                     messageInfo.content = message.data.split(':')[2];
                     messageInfo.time = dayjs().format('YYYY-MM-DD HH:mm:ss');
                     messageList.value.push(messageInfo);
+                    console.log("发送时间：",messageInfo.time);
                     console.log("发送的消息：",messageInfo);
                     console.log("新的消息记录：",messageList);
                 };
@@ -125,6 +126,7 @@
                     if (data.success){
                         message.success("消息发送成功！");
                     }
+                    // 聊天内容拉回底部
                     chatWindow.scrollTop = chatWindow.scrollHeight
                 });
                 content.value = '';

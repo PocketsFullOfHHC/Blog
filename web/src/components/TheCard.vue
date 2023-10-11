@@ -33,6 +33,16 @@
                   {{blogList.commentNum}}
                 </span>
             </span>
+            <span key="collect">
+                <a-tooltip title="收藏">
+                    <template v-if="isCollect === 1">
+                        <StarFilled @click="collectBlog"/>
+                    </template>
+                    <template v-else>
+                        <StarOutlined @click="collectBlog"/>
+                    </template>
+                </a-tooltip>
+            </span>
         </template>
         <!-- 点赞展示 -->
         <a-list
@@ -102,7 +112,7 @@
     /* eslint-disable */
     // eslint-disable-next-line vue/no-setup-props-destructure
     import dayjs from 'dayjs';
-    import { LikeFilled, LikeOutlined, DislikeFilled, DislikeOutlined, LikeTwoTone } from '@ant-design/icons-vue';
+    import { LikeFilled, LikeOutlined, DislikeFilled, DislikeOutlined, LikeTwoTone, StarOutlined } from '@ant-design/icons-vue';
     import { defineComponent, ref, onMounted } from 'vue';
     import relativeTime from 'dayjs/plugin/relativeTime';
     import { CommentOutlined } from '@ant-design/icons-vue';
@@ -119,6 +129,8 @@
             DislikeFilled,
             DislikeOutlined,
             LikeTwoTone,
+            StarOutlined,
+            CommentOutlined,
         },
         props: ['blogList'],
         // setup中使用props
@@ -324,9 +336,48 @@
                 })
             };
 
+            /**
+             * 收藏博客
+             */
+            const isCollect = ref(0);
+
+            // 确定收藏状态
+            const isCollected = () =>{
+                axios.get('/collect/collectBlogList/'+ store.state.user.id).then((response) => {
+                    const data = response.data;
+                    console.log("用户收藏名单：", data);
+                    for (let item of data.content){
+                        if (item.id === props.blogList.id){
+                            isCollect.value = 1;
+                            break;
+                        }else {
+                            isCollect.value = 0;
+                        }
+                    }
+                })
+            };
+
+            // 收藏
+            const collectBlog = () => {
+                const collectSaveReq = {
+                    collectorId: store.state.user.id,
+                    blogId: props.blogList.id
+                };
+                axios.post('/collect/save', collectSaveReq).then((response) =>{
+                    const data = response.data;
+                    isCollect.value = 1;
+                    if (data.success){
+                        message.success("收藏成功！")
+                    }else {
+                        message.error(data.message);
+                    }
+                })
+            };
+
             onMounted(() => {
                 isMyLike();
                 blogsLike();
+                isCollected();
             });
 
             return {
@@ -338,7 +389,6 @@
 
                 dayjs,
                 html,
-                CommentOutlined,
                 avatarName,
 
                 comments,
@@ -349,6 +399,9 @@
                 content,
 
                 toUserInfo,
+
+                collectBlog,
+                isCollect,
             };
         },
     });
