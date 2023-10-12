@@ -36,7 +36,7 @@
             <span key="collect">
                 <a-tooltip title="收藏">
                     <template v-if="isCollect === 1">
-                        <StarFilled @click="collectBlog"/>
+                        <StarFilled @click="disCollectBlog"/>
                     </template>
                     <template v-else>
                         <StarOutlined @click="collectBlog"/>
@@ -359,6 +359,11 @@
 
             // 收藏
             const collectBlog = () => {
+                // 判断是否登录
+                if(!store.state.user.id){
+                    message.warn("请登录后再收藏博客")
+                    return;
+                }
                 const collectSaveReq = {
                     collectorId: store.state.user.id,
                     blogId: props.blogList.id
@@ -374,10 +379,25 @@
                 })
             };
 
+            // 取消收藏
+            const disCollectBlog = () => {
+                axios.get('/collect/delete/'+ store.state.user.id + '/' + props.blogList.id).then((response) =>{
+                    const data = response.data;
+                    isCollect.value = 0;
+                    if (data.success){
+                        message.success("取消收藏成功！")
+                    }else {
+                        message.error(data.message);
+                    }
+                })
+            };
+
             onMounted(() => {
                 isMyLike();
                 blogsLike();
-                isCollected();
+                if(store.state.user.id){
+                    isCollected();
+                }
             });
 
             return {
@@ -402,6 +422,7 @@
 
                 collectBlog,
                 isCollect,
+                disCollectBlog,
             };
         },
     });
