@@ -9,6 +9,7 @@ import AdminFriend from '../views/admin/AdminFriend.vue';
 import AdminFollow from '../views/admin/AdminFollow.vue';
 import AdminBlogEdit from '../views/admin/AdminBlogEdit.vue';
 import AdminChat from '../views/admin/AdminChat.vue';
+import AdminCollect from '../views/admin/AdminCollect.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -45,6 +46,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/publish',
     name: 'publish',
     component: AdminPublish
+  },
+  {
+    path: '/collect',
+    name: 'collect',
+    component: AdminCollect
   },
   {
     path: '/info',

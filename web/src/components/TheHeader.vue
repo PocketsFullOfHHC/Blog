@@ -14,9 +14,10 @@
             <a-menu-item key="4" v-if="user.id"><router-link to="/friend">好友列表</router-link></a-menu-item>
             <a-menu-item key="5" v-if="user.id"><router-link to="/myself">我的博客</router-link></a-menu-item>
             <a-menu-item key="6" v-if="user.id"><router-link to="/publish">发布博客</router-link></a-menu-item>
-            <a-menu-item key="7" v-if="!user.id" :style="{marginLeft:'auto'}" @click="popSignIn">登录</a-menu-item>
-            <a-menu-item key="8" v-if="!user.id" @click="popSignUp">注册</a-menu-item>
-            <a-menu-item key="9" v-if="user.id" :style="{marginLeft:'auto'}">
+            <a-menu-item key="7" v-if="user.id"><router-link to="/collect">我的收藏</router-link></a-menu-item>
+            <a-menu-item key="8" v-if="!user.id" :style="{marginLeft:'auto'}" @click="popSignIn">登录</a-menu-item>
+            <a-menu-item key="9" v-if="!user.id" @click="popSignUp">注册</a-menu-item>
+            <a-menu-item key="10" v-if="user.id" :style="{marginLeft:'auto'}">
                 <a-dropdown>
                     <a class="ant-dropdown-link" @click.prevent>
                         <a-avatar :src="'http://localhost:8080/picture/avatars/' + avatarName" alt="Han Solo" :style="{ marginRight:'10px'}"/>
