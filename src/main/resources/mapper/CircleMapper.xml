@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhc.blogs.mapper.CircleMapper">
+    <!-- 获取所有的部落信息 -->
+    <select id="getCircleList" resultType="com.hhc.blogs.domain.Circle">
+        select `id` id, `circle_name` circleName, `intro` intro, `manager_id` managerId, `created_time` createdTime from `circle`
+    </select>
+
+    <!-- 通过部落名查找部落信息(避免重名) -->
+    <select id="selectCircleByCircleName" resultType="com.hhc.blogs.domain.Circle">
+        select * from `circle` where `circle_name` = #{0}
+    </select>
+
+    <!-- 创建新的部落 -->
+    <update id="insertCircle" parameterType="com.hhc.blogs.domain.Circle">
+        insert into `circle` values (#{id}, #{circleName}, #{intro}, #{managerId}, #{createdTime});
+    </update>
+
+    <!-- 更改部落信息 -->
+    <update id="updateCircle" parameterType="com.hhc.blogs.req.CircleUpdateReq">
+        update `circle` set circle_name = #{circleName}, intro = #{intro}
+        where id = #{id};
+    </update>
+
+    <!-- 删除部落 -->
+    <delete id="deleteCircle">
+        delete from `circle` where id = #{circleId}
+    </delete>
+
+    <!-- 获取我创建部落的信息 -->
+    <select id="selectCirclesByManagerId" resultType="com.hhc.blogs.domain.Circle">
+        select t1.`id` id, t1.`circle_name` circleName, t1.`intro` intro, t1.`manager_id` managerId, t1.`created_time` createdTime
+        from circle t1 where t1.manager_id = #{userId}
+    </select>
+</mapper>

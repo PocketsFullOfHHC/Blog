@@ -4,8 +4,8 @@
             <a-breadcrumb-item>好友列表</a-breadcrumb-item>
         </a-breadcrumb>
         <a-layout style="padding: 24px 0; background: #fff">
-            <div style="padding: 20px">
-                <a-row :gutter="16">
+            <div style="padding: 20px 60px">
+                <a-row :gutter="80">
                     <a-col :span="8" v-for="(item) in followList" :key="item.id" style="margin-bottom: 20px">
                         <a-card hoverable style="width: 320px">
                             <template #actions>

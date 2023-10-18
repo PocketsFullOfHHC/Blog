@@ -1,0 +1,54 @@
+POST http://localhost:8080/circle/create
+Content-Type: application/json
+
+{
+  "circleName": "测试部落1",
+  "intro": "测试1",
+  "managerId": 355950515865128960
+}
+
+###
+POST http://localhost:8080/circle/update
+Content-Type: application/json
+
+{
+  "id": 369686894839205888,
+  "circleName": "部落1",
+  "intro": "部落测试"
+}
+
+###
+
+POST http://localhost:8080/circle/create
+Content-Type: application/json
+
+{
+"circleName": "测试部落4",
+"intro": "测试4",
+"managerId": 355950515865128960
+}
+
+###
+
+GET http://localhost:8080/circle/list
+
+###
+
+GET http://localhost:8080/circle/delete/369688811162177536
+
+###
+
+POST http://localhost:8080/circle/create
+Content-Type: application/json
+
+{
+  "circleName": "测试部落3",
+  "intro": "测试3",
+  "managerId": 355950714255708160
+}
+
+###
+
+GET http://localhost:8080/circle/myCreatedCircle/355950515865128960
+
+###

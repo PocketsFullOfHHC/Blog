@@ -86,25 +86,27 @@ create table user_info
   default charset = utf8mb4
     comment '用户信息表';
 
-#兴趣圈表
+#部落表
 drop table if exists `circle`;
 create table circle
 (
     id bigint not null,
-    circle_name varchar(100) not null comment '兴趣圈名字',
+    circle_name varchar(100) not null comment '部落名字',
     intro mediumtext null comment '介绍',
     manager_id bigint not null comment '管理者id',
     created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '创建时间',
-    tags mediumtext null comment '兴趣圈标签',
+    tags mediumtext null comment '部落标签',
     constraint circle_pk
         primary key (id),
     constraint circle_user_id_fk
         foreign key (manager_id) references user (id)
 ) engine = innodb
   default charset = utf8mb4
-    comment '兴趣圈表';
+    comment '部落表';
 
-# 用户-兴趣圈表
+ALTER TABLE circle DROP COLUMN tags;
+
+# 用户-部落表
 drop table if exists `user_circle`;
 create table user_circle
 (
@@ -120,7 +122,7 @@ create table user_circle
         foreign key (user_id) references user (id)
 ) engine = innodb
   default charset = utf8mb4
-    comment '用户-兴趣圈表';
+    comment '用户-部落表';
 
 # 关注表
 drop table if exists `follow`;
@@ -139,7 +141,7 @@ create table follow
 )
     comment '关注表';
 
-#兴趣圈帖子表
+#部落帖子表
 drop table if exists `circle_blog`;
 create table circle_blog
 (
@@ -157,7 +159,7 @@ create table circle_blog
         foreign key (author_id) references user (id)
 )engine = innodb
  default charset = utf8mb4
-    comment '兴趣圈帖子表';
+    comment '部落帖子表';
 
 # 评论表
 drop table if exists `comment`;

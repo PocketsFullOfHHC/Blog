@@ -10,6 +10,7 @@ import AdminFollow from '../views/admin/AdminFollow.vue';
 import AdminBlogEdit from '../views/admin/AdminBlogEdit.vue';
 import AdminChat from '../views/admin/AdminChat.vue';
 import AdminCollect from '../views/admin/AdminCollect.vue';
+import AdminCircle from '../views/admin/AdminCircle.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -51,6 +52,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/collect',
     name: 'collect',
     component: AdminCollect
+  },
+  {
+    path: '/circle',
+    name: 'circle',
+    component: AdminCircle
   },
   {
     path: '/info',

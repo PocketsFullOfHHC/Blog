@@ -7,6 +7,7 @@ public enum BusinessExceptionCode {
     VOTE_REPEAT("您已点赞或点踩过"),
     FOLLOW_REPEAT("您已关注过"),
     COLLECT_REPEAT("您已收藏过"),
+    CIRCLE_NAME_EXIST("部落名已存在"),
     ;
 
     private String desc;

@@ -176,7 +176,6 @@
              */
             const inputRef = ref();
             const tags = ref([]);
-            console.log(store.state.user.tags);
             const color = ['pink','red','orange','green','cyan','blue','purple'];
 
             // 解析数据库中的标签json
