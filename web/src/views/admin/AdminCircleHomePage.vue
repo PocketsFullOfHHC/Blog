@@ -22,7 +22,7 @@
                     />
                 </a-modal>
                 <div v-for="( item ) in blogList" :key="item.id" >
-                    <TheCard :blogList="item"></TheCard>
+                    <TheCircleCard :blogList="item" :ifShowDeleteButton="managerId === store.state.user.id"></TheCircleCard>
                 </div>
                 <a-pagination
                         v-model:current="current"
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-    import TheCard from "@/components/TheCard.vue";
+    import TheCircleCard from "@/components/TheCircleCard.vue";
     import TheSider from "@/components/TheSider";
     import { defineComponent, ref, onMounted } from 'vue';
     import { StarOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons-vue';
@@ -47,7 +47,7 @@
     export default defineComponent({
         name: "CircleHomePage",
         components: {
-            TheCard,
+            TheCircleCard,
             TheSider,
             StarOutlined,
             LikeOutlined,
@@ -57,6 +57,7 @@
             const router = useRouter();
             // 获取路由传参的参数
             let circleId = router.currentRoute.value.query.circleId;
+            let managerId = router.currentRoute.value.query.managerId;
 
             /**
              * 分页获取部落博客
@@ -115,6 +116,9 @@
             onMounted(()=>{
                 getAllBlog(1);
                 getBlogNum();
+                console.log("部落管理者：", managerId);
+                console.log("登录者：", store.state.user.id);
+                console.log("是否相同：", store.state.user.id === managerId);
             });
 
             return {
@@ -128,6 +132,9 @@
                 modalVisible,
                 blogContent,
                 saveCircleBlog,
+
+                managerId,
+                store,
             };
         },
     });

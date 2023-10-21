@@ -18,7 +18,7 @@
                         }">
                             <a-button size="small" type="primary" style="margin-left: 30px">编辑</a-button>
                         </router-link>
-                        <a-popconfirm title="确定要删除这篇帖子？" @confirm="deleteBlog(item.id)" ok-text="是" cancel-text="否">
+                        <a-popconfirm title="确定要删除这篇博客？" @confirm="deleteBlog(item.id)" ok-text="是" cancel-text="否">
                             <a-button size="small" danger type="primary" style="margin-left: 10px">删除</a-button>
                         </a-popconfirm>
                         <a-divider></a-divider>

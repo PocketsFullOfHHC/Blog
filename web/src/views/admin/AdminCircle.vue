@@ -41,7 +41,7 @@
                         <a-col :span="8" v-for="( circle ) in createdCircleList" :key="circle.id" style="margin-bottom: 20px">
                             <a-card hoverable style="width: 320px">
                                 <template #actions>
-                                    <home-outlined key="home" @click="toCircleHomePage(circle.id)"/>
+                                    <home-outlined key="home" @click="toCircleHomePage(circle.id, circle.managerId)"/>
                                     <edit-outlined @click="showCircleInfo(circle.id, circle.circleName, circle.intro)"/>
                                     <a-popconfirm title="确认删除部落？" ok-text="是" cancel-text="否"  @confirm="deleteCircle(circle.id)">
                                         <delete-outlined key="import"/>
@@ -209,11 +209,12 @@
              * 进入部落主页
              */
             const router = useRouter();
-            const toCircleHomePage = (circleId) => {
+            const toCircleHomePage = (circleId, managerId) => {
                 router.push ({
                     path:"/circleHomePage",
                     query:{
-                        circleId: circleId
+                        circleId: circleId,
+                        managerId: managerId
                     }
                 })
             };
