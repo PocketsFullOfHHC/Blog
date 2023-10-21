@@ -34,7 +34,7 @@ GET http://localhost:8080/circle/list
 
 ###
 
-GET http://localhost:8080/circle/delete/369688811162177536
+GET http://localhost:8080/circle/delete/999999999999999999
 
 ###
 
@@ -52,3 +52,28 @@ Content-Type: application/json
 GET http://localhost:8080/circle/myCreatedCircle/355950515865128960
 
 ###
+
+GET http://localhost:8080/circle/joinCircle/355950515865128960/369689978235654144/355950714255708160
+
+###
+
+GET http://localhost:8080/circle/joinCircle/355950515865128960/369686894839205888/355950515865128960
+
+###
+
+GET http://localhost:8080/circle/exitCircle/355950515865128960/369689978235654144
+
+###
+
+GET http://localhost:8080/circle/myJoinedCircle/355950515865128960
+
+###
+
+GET http://localhost:8080/circle/circleMember/369689978235654144
+
+###
+
+GET http://localhost:8080/circle/deleteMemberFromCircle/355950515865128960/369689978235654144
+
+###
+

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhc.blogs.mapper.UserCircleMapper">
+
+    <!-- 加入部落 -->
+    <update id="insert">
+        insert into user_circle(id, circle_id, user_id, manager_id) VALUES (#{id}, #{circleId}, #{userId}, #{managerId});
+    </update>
+
+    <!-- 退出部落 -->
+    <delete id="delete">
+        delete from user_circle where user_id = #{userId} and circle_id = #{circleId}
+    </delete>
+
+    <!-- 删除部落的同时删除部落人信息 -->
+    <delete id="deleteByCircleId">
+        delete from user_circle where circle_id = #{circleId}
+    </delete>
+
+    <!-- 查询指定人加入的部落 -->
+    <select id="selectCirclesByUserId" resultType="com.hhc.blogs.domain.Circle">
+        select t1.`id` id, t1.`circle_name` circleName, t1.`intro` intro, t1.`manager_id` managerId, t1.`created_time` createdTime
+        from circle t1, user_circle t2 where t1.id = t2.circle_id and t2.user_id = #{userId}
+    </select>
+
+    <!-- 查询确定加入部落的信息(判重) -->
+    <select id="selectCircleByUserIdAndCircleId" resultType="com.hhc.blogs.domain.Circle">
+        select t1.`id` id, t1.`circle_name` circleName, t1.`intro` intro, t1.`manager_id` managerId, t1.`created_time` createdTime
+        from circle t1, user_circle t2 where t1.id = t2.circle_id and t2.user_id = #{userId} and t2.circle_id = #{circleId}
+    </select>
+
+    <!-- 查询指定部落的全部成员 -->
+    <select id="getMemberByCircleId" resultType="com.hhc.blogs.domain.User">
+        select t1.`id` id, t1.`username` username, t1.`name` name, t1.`avatar` avatar
+        from user t1, user_circle t2 where t1.id = t2.user_id and t2.circle_id = #{circleId} and t2.user_id != t2.manager_id
+    </select>
+</mapper>
