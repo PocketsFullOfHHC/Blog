@@ -54,6 +54,24 @@
                     </a-row>
                 </div>
                 <a-divider></a-divider>
+                <h4>我所在的部落</h4>
+                <div style="padding: 20px 55px">
+                    <a-row :gutter="60">
+                        <a-col :span="8" v-for="( circle ) in joinedCircleList" :key="circle.id" style="margin-bottom: 20px">
+                            <a-card hoverable style="width: 320px">
+                                <template #actions>
+                                    <home-outlined key="home" @click="toCircleHomePage(circle.id, circle.managerId)"/>
+                                    <a-popconfirm title="确认退出部落圈？" ok-text="是" cancel-text="否"  @confirm="exitCircle(circle.id)">
+                                        <StopOutlined key="import"/>
+                                    </a-popconfirm>
+                                </template>
+                                <div style="text-align: center; font-size: 20px">{{circle.circleName}}</div>
+                                <div style="font-size: 15px; color: rgba(0, 0, 0, 0.45); margin-top: 10px">部落介绍：{{circle.intro}}</div>
+                            </a-card>
+                        </a-col>
+                    </a-row>
+                </div>
+                <a-divider></a-divider>
                 <h4>所有部落</h4>
                 <div style="padding: 20px 55px">
                     <a-row :gutter="60">
@@ -61,7 +79,7 @@
                             <a-card hoverable style="width: 320px">
                                 <template #actions>
                                     <home-outlined key="home" @click="toCircleHomePage(circle.id)"/>
-                                    <a-popconfirm title="确认加入部落？" ok-text="是" cancel-text="否">
+                                    <a-popconfirm title="确认加入部落？" ok-text="是" cancel-text="否" @confirm="partInCircle(circle.id, circle.managerId)">
                                         <import-outlined key="import"/>
                                     </a-popconfirm>
                                 </template>
@@ -219,9 +237,53 @@
                 })
             };
 
+            /**
+             * 获取我加入的部落
+             * */
+            let joinedCircleList = ref();
+            const getJoinedCircleList = () => {
+                axios.get("/circle/myJoinedCircle/" + store.state.user.id).then((response) => {
+                    const data = response.data;
+                    if (data){
+                        joinedCircleList.value = data.content ? data.content :[];
+                    }
+                })
+            };
+
+            /**
+             * 加入部落
+             * */
+            const partInCircle = (circleId, managerId) => {
+                axios.get('/circle/joinCircle/' + store.state.user.id + '/' + circleId + '/' + managerId).then((response) => {
+                    const data = response.data;
+                    if (data.success){
+                        getCircleList();
+                        getJoinedCircleList();
+                        message.success("加入部落成功");
+                    } else {
+                        message.error(data.message);
+                    }
+                })
+            };
+
+            /**
+             * 退出部落
+             * */
+            const exitCircle = (circleId) => {
+                axios.get('/circle/exitCircle/' + store.state.user.id + '/' + circleId).then((response) => {
+                    const data = response.data;
+                    if (data.success){
+                        getCircleList();
+                        getJoinedCircleList();
+                        message.success("退出部落成功");
+                    }
+                })
+            };
+
             onMounted(()=>{
                 getCircleList();
                 getCreatedCircleList();
+                getJoinedCircleList();
             });
 
             return {
@@ -242,6 +304,11 @@
                 circleIntro,
 
                 toCircleHomePage,
+
+                joinedCircleList,
+                getJoinedCircleList,
+                partInCircle,
+                exitCircle,
             };
         },
     });
