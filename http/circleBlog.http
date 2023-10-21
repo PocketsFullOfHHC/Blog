@@ -1,0 +1,41 @@
+POST http://localhost:8080/circleBlog/saveCircleBlog
+Content-Type: application/json
+
+{
+  "authorId": 355950515865128960,
+  "content": "<p>你好啊</p>",
+  "circleId": 369686894839205888
+}
+
+###
+
+POST http://localhost:8080/circleBlog/saveCircleBlog
+Content-Type: application/json
+
+{
+  "authorId": 355950515865128960,
+  "content": "<p>这个部落没有人的啊</p>",
+  "circleId": 369686894839205888
+}
+
+###
+
+POST http://localhost:8080/circleBlog/saveCircleBlog
+Content-Type: application/json
+
+{
+  "authorId": 355950515865128960,
+  "content": "<p>这个部落真的没有人吗</p>",
+  "circleId": 369791417259790336
+}
+
+###
+
+GET http://localhost:8080/circleBlog/circleBlogListByPage/369686894839205888/1/2
+
+###
+
+GET http://localhost:8080/circleBlog/deleteCircleBlog/369807879634554880
+
+###
+

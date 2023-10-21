@@ -4,6 +4,7 @@ import com.hhc.blogs.domain.Circle;
 import com.hhc.blogs.req.CircleCreateReq;
 import com.hhc.blogs.req.CircleUpdateReq;
 import com.hhc.blogs.resp.CommonResp;
+import com.hhc.blogs.service.CircleBlogService;
 import com.hhc.blogs.service.CircleService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,9 @@ public class CircleController {
 
     @Resource
     private CircleService circleService;
+
+    @Resource
+    private CircleBlogService circleBlogService;
 
     /**
      * 查询全部的部落信息
@@ -54,6 +58,7 @@ public class CircleController {
     @GetMapping("/delete/{circleId}")
     public CommonResp<Object> delete(@PathVariable Long circleId){
         CommonResp<Object> resp = new CommonResp<>();
+        circleBlogService.deleteByCircleId(circleId);
         circleService.deleteCircle(circleId);
         return resp;
     }

@@ -41,6 +41,7 @@
                         <a-col :span="8" v-for="( circle ) in createdCircleList" :key="circle.id" style="margin-bottom: 20px">
                             <a-card hoverable style="width: 320px">
                                 <template #actions>
+                                    <home-outlined key="home" @click="toCircleHomePage(circle.id)"/>
                                     <edit-outlined @click="showCircleInfo(circle.id, circle.circleName, circle.intro)"/>
                                     <a-popconfirm title="确认删除部落？" ok-text="是" cancel-text="否"  @confirm="deleteCircle(circle.id)">
                                         <delete-outlined key="import"/>
@@ -59,7 +60,7 @@
                         <a-col :span="8" v-for="( circle ) in circleList" :key="circle.id" style="margin-bottom: 20px">
                             <a-card hoverable style="width: 320px">
                                 <template #actions>
-                                    <home-outlined key="home"/>
+                                    <home-outlined key="home" @click="toCircleHomePage(circle.id)"/>
                                     <a-popconfirm title="确认加入部落？" ok-text="是" cancel-text="否">
                                         <import-outlined key="import"/>
                                     </a-popconfirm>
@@ -81,6 +82,7 @@
     import store from '@/store'
     import { HomeOutlined, DeleteOutlined, MessageOutlined, ImportOutlined, TeamOutlined, EditOutlined} from '@ant-design/icons-vue';
     import  { message }  from "ant-design-vue";
+    import  {useRouter}  from "vue-router";
     export default defineComponent({
         name: "AdminCircle",
         components: {
@@ -145,8 +147,7 @@
                         message.success("部落创建成功！")
                         createdCircle.value.circleIntro = '';
                         createdCircle.value.circleName = '';
-                        getCircleList();
-                        getCreatedCircleList();
+                        location.reload();
                         createModalVisible.value = false;
                     }else {
                         message.error(data.message);
@@ -197,10 +198,22 @@
                 axios.post('/circle/update', updateCircleReq).then((response) => {
                     const data = response.data;
                     if (data.success) {
-                        getCircleList();
-                        getCreatedCircleList();
+                        location.reload();
                         message.success("修改部落信息成功！")
                         alterCircleInfoVisible.value = false;
+                    }
+                })
+            };
+
+            /**
+             * 进入部落主页
+             */
+            const router = useRouter();
+            const toCircleHomePage = (circleId) => {
+                router.push ({
+                    path:"/circleHomePage",
+                    query:{
+                        circleId: circleId
                     }
                 })
             };
@@ -209,6 +222,7 @@
                 getCircleList();
                 getCreatedCircleList();
             });
+
             return {
                 circleList,
                 createdCircle,
@@ -225,6 +239,8 @@
                 circleId,
                 circleName,
                 circleIntro,
+
+                toCircleHomePage,
             };
         },
     });
