@@ -29,10 +29,11 @@
                       我的部落
                     </span>
                 </template>
-                <a-menu-item key="5">option5</a-menu-item>
-                <a-menu-item key="6">option6</a-menu-item>
-                <a-menu-item key="7">option7</a-menu-item>
-                <a-menu-item key="8">option8</a-menu-item>
+                <a-menu-item v-for="( circle ) in joinedCircleList" :key="circle.id" @click="toCircleHomePage(circle.id, circle.managerId)">
+                    <span style="margin-left: 30px">
+                        {{circle.circleName}}
+                    </span>
+                </a-menu-item>
             </a-sub-menu>
         </a-menu>
     </a-layout-sider>
@@ -42,9 +43,15 @@
     import { ref, onMounted } from 'vue';
     import axios from 'axios'
     import store from '@/store'
+    import { useRouter } from "vue-router";
     export default {
         name: "TheSider",
         setup(){
+            const router = useRouter();
+
+            /**
+             * 获取好友列表
+             * */
             const followList = ref();
             const getFollowList = () => {
                 axios.get("/follow/followList/" + store.state.user.id).then((response) => {
@@ -55,12 +62,42 @@
                     }
                 })
             };
+
+            /**
+             * 获取部落列表
+             * */
+            const joinedCircleList = ref();
+            const getJoinedCircleList = () => {
+                axios.get("/circle/myJoinedCircle/" + store.state.user.id).then((response) => {
+                    const data = response.data;
+                    if (data){
+                        joinedCircleList.value = data.content ? data.content :[];
+                    }
+                })
+            };
+
+            /**
+             * 进入部落主页
+             * */
+            const toCircleHomePage = (circleId:any, managerId:any) => {
+                router.push({
+                    path:"/circleHomePage",
+                    query:{
+                        circleId: circleId,
+                        managerId: managerId
+                    }
+                });
+            };
+
             onMounted(() => {
+                getJoinedCircleList();
                 getFollowList();
             });
+
             return{
-                getFollowList,
                 followList,
+                joinedCircleList,
+                toCircleHomePage,
             }
         }
     }

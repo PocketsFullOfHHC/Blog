@@ -42,6 +42,14 @@
                             <a-card hoverable style="width: 320px">
                                 <template #actions>
                                     <home-outlined key="home" @click="toCircleHomePage(circle.id, circle.managerId)"/>
+                                    <router-link :to="{
+                                          path:'/adminCircleMember',
+                                          query:{
+                                            circleId: circle.id
+                                          }
+                                    }">
+                                        <team-outlined key="team"/>
+                                    </router-link>
                                     <edit-outlined @click="showCircleInfo(circle.id, circle.circleName, circle.intro)"/>
                                     <a-popconfirm title="确认删除部落？" ok-text="是" cancel-text="否"  @confirm="deleteCircle(circle.id)">
                                         <delete-outlined key="import"/>

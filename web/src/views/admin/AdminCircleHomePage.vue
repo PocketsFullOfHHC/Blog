@@ -4,7 +4,6 @@
             <a-breadcrumb-item>部落</a-breadcrumb-item>
         </a-breadcrumb>
         <a-layout style="padding: 24px 0; background: #fff">
-            <the-sider></the-sider>
             <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
                 <a-button type="primary" style="margin: 10px 0" @click="popModal">发言</a-button>
                 <a-modal
@@ -37,7 +36,6 @@
 
 <script>
     import TheCircleCard from "@/components/TheCircleCard.vue";
-    import TheSider from "@/components/TheSider";
     import { defineComponent, ref, onMounted } from 'vue';
     import { StarOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons-vue';
     import { message } from 'ant-design-vue'
@@ -48,7 +46,6 @@
         name: "CircleHomePage",
         components: {
             TheCircleCard,
-            TheSider,
             StarOutlined,
             LikeOutlined,
             MessageOutlined,
