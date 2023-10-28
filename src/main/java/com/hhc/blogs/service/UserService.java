@@ -46,7 +46,7 @@ public class UserService {
     private UserMapperCust userMapperCust;
 
     /**
-     * 测试查询所有的用户信息
+     * 测试指定姓名的用户信息
      * */
     public List<UserResp> list(UserReq req){
         UserExample userExample = new UserExample();
@@ -181,4 +181,21 @@ public class UserService {
             userInfoMapper.updateByPrimaryKeyWithBLOBs(userInfo);
         }
     }
+
+    /**
+     * 根据用户名查找用户id
+     * */
+    public Long getUserIdByUserName(String username){
+        Long userIdByUserName = userMapperCust.getUserIdByUserName(username);
+        return userIdByUserName;
+    }
+
+    /**
+     * 查询所有用户信息
+     * */
+    public List<User> listAll(){
+        List<User> user = userMapper.selectByExample(null);
+        return user;
+    }
+
 }

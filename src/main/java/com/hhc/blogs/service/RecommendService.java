@@ -6,10 +6,14 @@ import com.hankcs.hanlp.mining.cluster.ClusterAnalyzer;
 import com.hankcs.hanlp.seg.Segment;
 import com.hankcs.hanlp.seg.common.Term;
 import com.hankcs.hanlp.tokenizer.StandardTokenizer;
+import com.hhc.blogs.domain.User;
+import com.hhc.blogs.resp.BlogListResp;
+import com.hhc.blogs.resp.UserInfoResp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -19,8 +23,16 @@ public class RecommendService {
 
     private static final Logger LOG = LoggerFactory.getLogger(RecommendService.class);
 
-    public void test(){
+    @Resource
+    private UserService userService;
 
+    @Resource
+    private BlogService blogService;
+
+    /**
+     * 测试
+     * */
+    public void test(){
         // 分词
         List<Term> termList = StandardTokenizer.segment("我新造一个词叫幻想乡你能识别并标注正确词性吗？徐先生还具体帮助他确定了把画雄鹰、松鼠和麻雀作为主攻目标。");
         LOG.info("分词返回值{}", termList);
@@ -71,6 +83,63 @@ public class RecommendService {
             List<Term> termListPlace = segment.seg(sentence);
             System.out.println(termListPlace);
         }
+
+        // 测试新业务
+        Long userIdByUserName = userService.getUserIdByUserName("test2");
+        LOG.info("id:{}",userIdByUserName);
     }
 
+    /**
+     * 根据博客内容聚类进行好友推荐
+     * */
+    public List<UserInfoResp> getUserCluster(String name){
+        List<UserInfoResp> userInfoRespList = new ArrayList<>();
+        // 查询全部的用户
+        List<User> list = userService.listAll();
+        // 定义聚类分析类
+        ClusterAnalyzer<String> analyzer = new ClusterAnalyzer<String>();
+        for (User user : list) {
+            List<String> userWordList = new ArrayList<>();
+            List<BlogListResp> blogListResps = blogService.myListNotByPage(user.getId());
+            for (BlogListResp blog : blogListResps) {
+                // 博客预处理、分词、将名词放入词表
+                List<String> wordList = new ArrayList<>();
+                String BlogCompleted = blog.getContent().replaceAll("<.{1,5}>", "");
+                List<Term> termList = StandardTokenizer.segment(BlogCompleted);
+                for (Term term : termList) {
+                    if (term.nature.equals(Nature.n) || term.nature.equals(Nature.nz)) {
+                        wordList.add(term.word);
+                    }
+                }
+                // 添加关键词
+                List<String> keywordList = HanLP.extractKeyword(blog.getContent(), 5);
+                wordList.addAll(keywordList);
+                userWordList.addAll(wordList);
+            }
+            String document = new String();
+            for (String word : userWordList) {
+                document = document.concat(",").concat(word);
+            }
+            // 将该用户的信息放入聚类分析方法中
+            analyzer.addDocument(user.getUsername(), document);
+        }
+        //聚类，簇的数量为用户数/5
+        List<Set<String>> kmeans = analyzer.kmeans(list.size() / 5 + 1);
+        LOG.info("kmeans聚类结果：{}", kmeans);
+        for (Set<String> set: kmeans) {
+            for (String s : set) {
+                if (s.equals(name)){
+                    for (String recommendName : set) {
+                        if (!recommendName.equals(name)) {
+                            Long userIdByName = userService.getUserIdByUserName(recommendName);
+                            UserInfoResp userInfo = userService.getUserInfo(userIdByName);
+                            userInfoRespList.add(userInfo);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        return userInfoRespList;
+    }
 }

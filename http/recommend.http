@@ -1,3 +1,8 @@
 GET http://localhost:8080/recommend/test
 
 ###
+
+GET http://localhost:8080/recommend/clusterUser/test2
+Accept: application/json
+
+###

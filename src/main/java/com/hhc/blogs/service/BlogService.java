@@ -178,4 +178,15 @@ public class BlogService {
         LOG.info("删除博客id：{}",blogId);
         blogMapper.deleteByExample(blogExample);
     }
+
+    /**
+     * 一次性查询全部指定用户的博客
+     * */
+    /**
+     * 按发布时间分页查找我的博客
+     * */
+    public List<BlogListResp> myListNotByPage(Long userId){
+        List<BlogListResp> blogList = blogMapperCust.getMyBlogList(userId);
+        return blogList;
+    }
 }
