@@ -6,6 +6,7 @@ import com.hankcs.hanlp.mining.cluster.ClusterAnalyzer;
 import com.hankcs.hanlp.seg.Segment;
 import com.hankcs.hanlp.seg.common.Term;
 import com.hankcs.hanlp.tokenizer.StandardTokenizer;
+import com.hhc.blogs.domain.Circle;
 import com.hhc.blogs.domain.User;
 import com.hhc.blogs.resp.BlogListResp;
 import com.hhc.blogs.resp.UserInfoResp;
@@ -28,6 +29,9 @@ public class RecommendService {
 
     @Resource
     private BlogService blogService;
+
+    @Resource
+    private CircleService circleService;
 
     /**
      * 测试
@@ -123,7 +127,7 @@ public class RecommendService {
             // 将该用户的信息放入聚类分析方法中
             analyzer.addDocument(user.getUsername(), document);
         }
-        //聚类，簇的数量为用户数/5
+        // 聚类，簇的数量为用户数/5
         List<Set<String>> kmeans = analyzer.kmeans(list.size() / 5 + 1);
         LOG.info("kmeans聚类结果：{}", kmeans);
         for (Set<String> set: kmeans) {
@@ -141,5 +145,13 @@ public class RecommendService {
             }
         }
         return userInfoRespList;
+    }
+
+    /**
+     * 部落查找
+     * */
+    public List<Circle> getCircleCluster(){
+        List<Circle> list = circleService.list();
+        return list;
     }
 }

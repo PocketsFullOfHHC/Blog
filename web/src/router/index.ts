@@ -13,6 +13,7 @@ import AdminCollect from '../views/admin/AdminCollect.vue';
 import AdminCircle from '../views/admin/AdminCircle.vue';
 import AdminCircleHomePage from '../views/admin/AdminCircleHomePage.vue';
 import AdminCircleMember from '../views/admin/AdminCircleMember.vue';
+import AdminRecommend from '../views/admin/AdminRecommend.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -44,6 +45,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/find',
     name: 'find',
     component: AdminFind
+  },
+  {
+    path: '/recommend',
+    name: 'recommend',
+    component: AdminRecommend
   },
   {
     path: '/publish',
