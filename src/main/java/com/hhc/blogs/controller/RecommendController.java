@@ -1,5 +1,6 @@
 package com.hhc.blogs.controller;
 
+import com.hhc.blogs.domain.Circle;
 import com.hhc.blogs.resp.CommonResp;
 import com.hhc.blogs.resp.UserInfoResp;
 import com.hhc.blogs.service.RecommendService;
@@ -40,6 +41,17 @@ public class RecommendController {
         CommonResp<List<UserInfoResp>> resp = new CommonResp<>();
         List<UserInfoResp> userCluster = recommendService.getUserCluster(name);
         resp.setContent(userCluster);
+        return resp;
+    }
+
+    /**
+     * 部落推荐
+     * */
+    @GetMapping("/clusterCircle")
+    public CommonResp<List<Circle>> clusterCircle(){
+        CommonResp<List<Circle>> resp = new CommonResp<>();
+        List<Circle> CircleCluster = recommendService.getCircleCluster();
+        resp.setContent(CircleCluster);
         return resp;
     }
 }
