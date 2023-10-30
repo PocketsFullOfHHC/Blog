@@ -26,6 +26,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -196,6 +197,36 @@ public class UserService {
     public List<User> listAll(){
         List<User> user = userMapper.selectByExample(null);
         return user;
+    }
+
+    /**
+     * 通过昵称查找好友
+     * */
+    public List<UserInfoResp> getUserInfoByName(String name){
+        String likeName = '%' + name + '%';
+        List<Long> userInfoList = userMapperCust.getUserInfoList(likeName);
+        List<UserInfoResp> userInfoRespList = new ArrayList<>();
+        for (Long Id : userInfoList) {
+            UserInfoResp userInfo = getUserInfo(Id);
+            userInfoRespList.add(userInfo);
+        }
+        return userInfoRespList;
+    }
+
+    /**
+     * 通过标签查找好友
+     * */
+    public List<UserInfoResp> getUserListByTags(String tag){
+        // %替代一个或多个字符
+        String selectTag = '%' + tag + '%';
+        List<Long> userIdByTag = userMapperCust.getUserIdByTag(selectTag);
+        LOG.info("查询标签：{}", selectTag);
+        List<UserInfoResp> userInfoRespList = new ArrayList<>();
+        for (Long userId : userIdByTag) {
+            UserInfoResp userInfo = getUserInfo(userId);
+            userInfoRespList.add(userInfo);
+        }
+        return userInfoRespList;
     }
 
 }

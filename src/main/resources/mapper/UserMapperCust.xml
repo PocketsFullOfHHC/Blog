@@ -16,4 +16,19 @@
     <select id="getUserIdByUserName" resultType="java.lang.Long">
        select `id` from user where username = #{username}
     </select>
+
+    <!-- 通过昵称获取id -->
+    <select id="getUserIdByName" resultType="java.lang.Long">
+       select `id` from user where name = #{name}
+    </select>
+
+    <!-- 通过昵称搜索好友 -->
+    <select id="getUserInfoList" resultType="java.lang.Long">
+        select `id` from user where name like #{name}
+    </select>
+
+    <!-- 通过标签搜索好友 -->
+    <select id="getUserIdByTag" resultType="java.lang.Long">
+        select `id` from user_info where tags like #{tag}
+    </select>
 </mapper>
