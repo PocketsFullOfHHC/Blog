@@ -8,7 +8,7 @@
                 :style="{ lineHeight: '64px' }"
                 :selectedKeys="[false]"
         >
-            <a-menu-item key="1"><router-link to="/" sele>首页</router-link></a-menu-item>
+            <a-menu-item key="1"><router-link to="/" sele>主页</router-link></a-menu-item>
             <a-menu-item key="2"><router-link to="/find">发现</router-link></a-menu-item>
             <a-menu-item key="3" v-if="user.id"><router-link to="/circle">部落</router-link></a-menu-item>
             <a-menu-item key="4" v-if="user.id"><router-link to="/follow">关注</router-link></a-menu-item>

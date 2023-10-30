@@ -286,3 +286,17 @@ create table `photo_likes`
         foreign key (photo_liker_id) references user (id)
 )
     comment '照片点赞表';
+
+# 博客快照表
+drop table if exists `blog_snapshot`;
+create table `blog_snapshot` (
+     id bigint auto_increment not null comment 'id',
+     blog_id bigint not null default 0 comment '博客id',
+     date date not null comment '快照日期',
+     vote_num int not null default 0 comment '点赞数',
+     comment_num int not null default 0 comment '评论数',
+     vote_increase int not null default 0 comment '点赞增长',
+     comment_increase int not null default 0 comment '评论增长',
+     primary key (`id`),
+     unique key `blog_id_date_unique` (`blog_id`, `date`)
+) engine=innodb default charset=utf8mb4 comment='博客快照表';
