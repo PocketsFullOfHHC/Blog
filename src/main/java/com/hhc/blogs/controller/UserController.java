@@ -83,7 +83,7 @@ public class UserController {
      * */
     @GetMapping("/logout/{token}")
     public CommonResp<UserLoginResp> logout(@PathVariable String token){
-        CommonResp resp = new CommonResp<>();
+        CommonResp<UserLoginResp> resp = new CommonResp<>();
         redisTemplate.delete(token);
         LOG.info("从redis中删除token: {}", token);
         return resp;
@@ -126,9 +126,31 @@ public class UserController {
      * 更改用户信息
      * */
     @PostMapping("/updateInfo")
-    public CommonResp updateInfo(@RequestBody UserInfoReq userInfoReq){
-        CommonResp resp = new CommonResp<>();
+    public CommonResp<Object> updateInfo(@RequestBody UserInfoReq userInfoReq){
+        CommonResp<Object> resp = new CommonResp<>();
         userService.updateUserInfo(userInfoReq);
+        return resp;
+    }
+
+    /**
+     * 根据用户昵称搜索
+     * */
+    @GetMapping("/getUserInfoByName/{name}")
+    public CommonResp<List<UserInfoResp>> getUserInfoByName(@PathVariable String name){
+        CommonResp<List<UserInfoResp>> resp = new CommonResp<>();
+        List<UserInfoResp> userInfo = userService.getUserInfoByName(name);
+        resp.setContent(userInfo);
+        return resp;
+    }
+
+    /**
+     * 根据标签搜索好友
+     * */
+    @GetMapping("/getUserListByTags/{tag}")
+    public CommonResp<List<UserInfoResp>> getUserListByTags(@PathVariable String tag){
+        CommonResp<List<UserInfoResp>> resp = new CommonResp<>();
+        List<UserInfoResp> userListByTags = userService.getUserListByTags(tag);
+        resp.setContent(userListByTags);
         return resp;
     }
 }
