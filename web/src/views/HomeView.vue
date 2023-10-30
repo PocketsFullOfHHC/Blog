@@ -1,7 +1,7 @@
 <template>
   <a-layout-content :style="{ padding: '0 50px', marginTop: '64px' }">
     <a-breadcrumb :style="{ margin: '16px 0' }">
-      <a-breadcrumb-item>Home</a-breadcrumb-item>
+      <a-breadcrumb-item>主页</a-breadcrumb-item>
     </a-breadcrumb>
     <a-layout style="padding: 24px 0; background: #fff">
       <the-sider></the-sider>

@@ -1,6 +1,10 @@
 <template>
     <a-layout-sider width="250" style="background: #fff" padding="200px">
         <a-menu mode="inline" style="height: 100%">
+            <a-menu-item key="welcome">
+                <MailOutlined />
+                <span> 欢迎 </span>
+            </a-menu-item>
             <a-sub-menu key="sub1">
                 <a-menu-item v-for="( friend ) in followList" :key="friend.id">
                     <router-link :to="{
@@ -18,16 +22,14 @@
                     </router-link>
                 </a-menu-item>
                 <template #title>
-                    <span>
-                      我的朋友
-                    </span>
+                    <user-outlined />
+                    <span> 我的朋友 </span>
                 </template>
             </a-sub-menu>
             <a-sub-menu key="sub2">
                 <template #title>
-                    <span>
-                      我的部落
-                    </span>
+                    <TeamOutlined />
+                    <span> 我的部落 </span>
                 </template>
                 <a-menu-item v-for="( circle ) in joinedCircleList" :key="circle.id" @click="toCircleHomePage(circle.id, circle.managerId)">
                     <span style="margin-left: 30px">

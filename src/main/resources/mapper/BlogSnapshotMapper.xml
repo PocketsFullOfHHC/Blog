@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhc.blogs.mapper.BlogSnapshotMapper">
+  <resultMap id="BaseResultMap" type="com.hhc.blogs.domain.BlogSnapshot">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="blog_id" jdbcType="BIGINT" property="blogId" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="vote_num" jdbcType="INTEGER" property="voteNum" />
+    <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
+    <result column="vote_increase" jdbcType="INTEGER" property="voteIncrease" />
+    <result column="comment_increase" jdbcType="INTEGER" property="commentIncrease" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, blog_id, `date`, vote_num, comment_num, vote_increase, comment_increase
+  </sql>
+  <select id="selectByExample" parameterType="com.hhc.blogs.domain.BlogSnapshotExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from blog_snapshot
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from blog_snapshot
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from blog_snapshot
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hhc.blogs.domain.BlogSnapshotExample">
+    delete from blog_snapshot
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hhc.blogs.domain.BlogSnapshot">
+    insert into blog_snapshot (id, blog_id, `date`, 
+      vote_num, comment_num, vote_increase, 
+      comment_increase)
+    values (#{id,jdbcType=BIGINT}, #{blogId,jdbcType=BIGINT}, #{date,jdbcType=DATE}, 
+      #{voteNum,jdbcType=INTEGER}, #{commentNum,jdbcType=INTEGER}, #{voteIncrease,jdbcType=INTEGER}, 
+      #{commentIncrease,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hhc.blogs.domain.BlogSnapshot">
+    insert into blog_snapshot
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="blogId != null">
+        blog_id,
+      </if>
+      <if test="date != null">
+        `date`,
+      </if>
+      <if test="voteNum != null">
+        vote_num,
+      </if>
+      <if test="commentNum != null">
+        comment_num,
+      </if>
+      <if test="voteIncrease != null">
+        vote_increase,
+      </if>
+      <if test="commentIncrease != null">
+        comment_increase,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="blogId != null">
+        #{blogId,jdbcType=BIGINT},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="voteNum != null">
+        #{voteNum,jdbcType=INTEGER},
+      </if>
+      <if test="commentNum != null">
+        #{commentNum,jdbcType=INTEGER},
+      </if>
+      <if test="voteIncrease != null">
+        #{voteIncrease,jdbcType=INTEGER},
+      </if>
+      <if test="commentIncrease != null">
+        #{commentIncrease,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hhc.blogs.domain.BlogSnapshotExample" resultType="java.lang.Long">
+    select count(*) from blog_snapshot
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update blog_snapshot
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.blogId != null">
+        blog_id = #{record.blogId,jdbcType=BIGINT},
+      </if>
+      <if test="record.date != null">
+        `date` = #{record.date,jdbcType=DATE},
+      </if>
+      <if test="record.voteNum != null">
+        vote_num = #{record.voteNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.commentNum != null">
+        comment_num = #{record.commentNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.voteIncrease != null">
+        vote_increase = #{record.voteIncrease,jdbcType=INTEGER},
+      </if>
+      <if test="record.commentIncrease != null">
+        comment_increase = #{record.commentIncrease,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update blog_snapshot
+    set id = #{record.id,jdbcType=BIGINT},
+      blog_id = #{record.blogId,jdbcType=BIGINT},
+      `date` = #{record.date,jdbcType=DATE},
+      vote_num = #{record.voteNum,jdbcType=INTEGER},
+      comment_num = #{record.commentNum,jdbcType=INTEGER},
+      vote_increase = #{record.voteIncrease,jdbcType=INTEGER},
+      comment_increase = #{record.commentIncrease,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hhc.blogs.domain.BlogSnapshot">
+    update blog_snapshot
+    <set>
+      <if test="blogId != null">
+        blog_id = #{blogId,jdbcType=BIGINT},
+      </if>
+      <if test="date != null">
+        `date` = #{date,jdbcType=DATE},
+      </if>
+      <if test="voteNum != null">
+        vote_num = #{voteNum,jdbcType=INTEGER},
+      </if>
+      <if test="commentNum != null">
+        comment_num = #{commentNum,jdbcType=INTEGER},
+      </if>
+      <if test="voteIncrease != null">
+        vote_increase = #{voteIncrease,jdbcType=INTEGER},
+      </if>
+      <if test="commentIncrease != null">
+        comment_increase = #{commentIncrease,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hhc.blogs.domain.BlogSnapshot">
+    update blog_snapshot
+    set blog_id = #{blogId,jdbcType=BIGINT},
+      `date` = #{date,jdbcType=DATE},
+      vote_num = #{voteNum,jdbcType=INTEGER},
+      comment_num = #{commentNum,jdbcType=INTEGER},
+      vote_increase = #{voteIncrease,jdbcType=INTEGER},
+      comment_increase = #{commentIncrease,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
