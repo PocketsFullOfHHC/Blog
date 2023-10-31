@@ -189,4 +189,12 @@ public class BlogService {
         List<BlogListResp> blogList = blogMapperCust.getMyBlogList(userId);
         return blogList;
     }
+
+    /**
+     * 获取全部博客数量
+     * */
+    public Integer blogNumAll(){
+        List<BlogResp> list = list();
+        return list.size();
+    }
 }

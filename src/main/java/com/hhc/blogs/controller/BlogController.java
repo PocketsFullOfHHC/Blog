@@ -113,4 +113,15 @@ public class BlogController {
         blogService.deleteBlogById(blogId);
         return resp;
     }
+
+    /**
+     * 获取博客总条数
+     * */
+    @GetMapping("/BlogNum")
+    public CommonResp<Object> AllBlogNum(){
+        CommonResp<Object> resp = new CommonResp<>();
+        Integer blogNum = blogService.blogNumAll();
+        resp.setContent(blogNum);
+        return resp;
+    }
 }
